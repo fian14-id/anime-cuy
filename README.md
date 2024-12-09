@@ -1,5 +1,5 @@
-### anime-cuy
-## an anime information website similar to MyAnimeList,  but created using Next.js
+# anime-cuy
+### an anime information website similar to MyAnimeList,  but created using Next.js
 ## Getting Started
 
 First, run the development server:
