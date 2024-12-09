@@ -1,5 +1,5 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
+### anime-cuy
+## an anime information website similar to MyAnimeList,  but created using Next.js
 ## Getting Started
 
 First, run the development server:
