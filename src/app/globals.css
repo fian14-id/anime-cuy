@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
+  --foreground-rgb: 22, 34, 44;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
 }
@@ -11,9 +11,13 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background-start-rgb: 22, 34, 44;
+    --background-end-rgb: 22, 34, 44;
   }
+}
+::selection {
+  color: #fff;
+  background: #242424;
 }
 
 body {
@@ -24,6 +28,8 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+    position: relative;
+    overflow-x: hidden;
 }
 
 @layer utilities {
@@ -31,3 +37,55 @@ body {
     text-wrap: balance;
   }
 }
+
+.mouse {
+	border: 3px solid #333;
+	border-radius: 60px;
+	position: relative;
+	&::before {
+		content: '';
+		width: 0.5rem;
+		height: 0.5rem;
+		position: absolute;
+		top: 5px;
+		left: 50%;
+		transform: translateX(-50%);
+		background-color: #333;
+		border-radius: 50%;
+		opacity: 1;
+		animation: wheel 1.8s infinite;
+		-webkit-animation: wheel 1.8s infinite;
+		-webkit-transform: translateX(-50%);
+		-moz-transform: translateX(-50%);
+		-ms-transform: translateX(-50%);
+		-o-transform: translateX(-50%);
+}
+}
+
+@keyframes wheel {
+	to {
+		opacity: 0;
+		top: 20px;
+	}
+}
+
+@-webkit-keyframes wheel {
+	to {
+		opacity: 0;
+		top: 20px;
+	}
+}
+/* 
+img {
+  width: 100%;
+  height: auto;
+  transition: .3s ease-in-out all;
+  -webkit-transition: .3s ease-in-out all;
+  -moz-transition: .3s ease-in-out all;
+  -ms-transition: .3s ease-in-out all;
+  -o-transition: .3s ease-in-out all;
+}
+
+img:hover {
+  scale: 103%;
+} */
