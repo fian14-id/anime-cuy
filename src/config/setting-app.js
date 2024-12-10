@@ -1,6 +1,6 @@
 export const page_content = {
     name_page: "Anime-Cuy",
-    logo_app: "/animecuy.ico",
+    logo_app: "/favicon.ico",
     description: "This is an anime information website similar to MyAnimeList, but built with Next.js to provide a modern and fast user experience.",
     developed_by: "Fianity",
     social_media: [
