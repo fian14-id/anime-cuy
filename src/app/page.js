@@ -3,7 +3,7 @@ import AnimeList from "@/components/AnimeList";
 import { popularAnime, newAnime } from "@/config/FetchApi";
 import { page_content } from "@/config/setting-app";
 
-const Home = async () => {
+const Page = async () => {
   const animePopular = await popularAnime();
   const newSeason = await newAnime();
 
@@ -14,7 +14,7 @@ const Home = async () => {
   // }
 
   return (
-    <div className="w-full h-full">
+    <section className="w-full h-full">
       <main className="relative flex flex-col items-center justify-center min-w-full min-h-screen text-center ">
         <motion.h1
           initial={{ opacity: 0, scale: 0 }}
@@ -44,9 +44,9 @@ const Home = async () => {
         setTitle="Popular Anime"
         linkHref="/popular"
       />
-      <AnimeList api={newSeason} setTitle="New Anime" linkHref="/ongoing" />
-    </div>
+      <AnimeList api={newSeason} setTitle="New Anime" linkHref="/ongoing" addtionalText="See More..." />
+    </section>
   );
 };
 
-export default Home;
+export default Page;

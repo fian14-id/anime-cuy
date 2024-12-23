@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import Link from "next/link";
 
-const AnimeList = ({ api, setTitle, linkHref }) => {
+const AnimeList = ({ api, setTitle, linkHref, addtionalText }) => {
   return (
     <>
       <div className="flex items-center justify-between px-4 mt-4">
@@ -12,10 +12,10 @@ const AnimeList = ({ api, setTitle, linkHref }) => {
           href={linkHref}
           className="text-xs font-light underline opacity-80 hover:opacity-100 md:text-sm"
         >
-          See More...
+          {addtionalText}
         </Link>
       </div>
-      <div className="grid w-full h-full grid-cols-1 gap-8 p-4 md:gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+      <div className="grid w-ful grid-cols-1 gap-8 p-4 md:gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
         {api.data.map((result) => {
           return (
             <Link href={`${result.mal_id}`} key={result.mal_id}>

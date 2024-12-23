@@ -22,12 +22,45 @@ export const searchAnime = async(query) => {
         return err
     }
 }
+export const searchManga = async(query) => {
+    try {
+        const response = await fetch(`${baseUrl}/manga?q=${query}`)
+        const search = response.json()
+        // console.log(search)
+        return search
+    } catch (err) {
+        console.log(err)
+        return err
+    }
+}
 export const newAnime = async() => {
     try {
         const response = await fetch(`${baseUrl}/seasons/now?limit=6`)
         const now = response.json()
         // console.log(now)
         return now
+    } catch (err) {
+        console.log(err)
+        return err
+    }
+}
+export const genreAnime = async() => {
+    try {
+        const response = await fetch(`${baseUrl}/genres/anime`)
+        const genre = response.json()
+        // console.log(now)
+        return genre
+    } catch (err) {
+        console.log(err)
+        return err
+    }
+}
+export const genreManga = async() => {
+    try {
+        const response = await fetch(`${baseUrl}/genres/manga`)
+        const genre = response.json()
+        // console.log(now)
+        return genre
     } catch (err) {
         console.log(err)
         return err

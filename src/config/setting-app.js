@@ -6,7 +6,7 @@ export const page_content = {
     social_media: [
         {
             name: "WhatsApp",
-            link: "+62-81331954019",
+            link: "+62-85161600536",
             icon: "whatsapp",
         },
         {

@@ -1,45 +1,21 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import Modal from "@/components/utils/Modal";
 import { MagnifyingGlass } from "@phosphor-icons/react";
 import { page_content } from "@/config/setting-app";
-import { searchAnime } from "@/config/FetchApi";
 
 const Navbar = () => {
   // const dataSearch = await searchAnime()
 
   const [isOpen, setIsOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [searchList, setSearchList] = useState();
-
-  const searchRef = useRef();
-  let timeoutSearch;
-
-  const handleSearch = () => {
-    const q = searchRef.current.value;
-    if (q.length > 3) {
-      clearTimeout(timeoutSearch);
-      timeoutSearch = setTimeout(async () => {
-        const query = await searchAnime(q);
-        setSearchList(query.data);
-      }, 1000);
-    } else if (q.length < 2) {
-      setSearchList([]);
-    }
-  };
 
   function toggleMenu() {
     setIsOpen(!isOpen);
   }
 
   // console.log(searchList)
-
-  const openSearch = () => setSearchOpen(true);
-  const closeSearch = () => setSearchOpen(false);
-
   return (
     <motion.nav
       initial={{ opacity: 0, y: -100 }}
@@ -62,34 +38,6 @@ const Navbar = () => {
         </span>
       </Link>
       <main>
-        {/* modal components */}
-        <Modal isOpen={searchOpen} onClose={closeSearch}>
-         <section className="flex flex-col w-full h-full">
-         <h1 className="font-semibold text-center text-md">Search</h1>
-          <input
-            type="text"
-            autoFocus
-            placeholder="min 3 char..."
-            className="px-4 py-2 w-full focus:border-b-2 border-b-[#242424] focus:outline-none"
-            onChange={handleSearch}
-            ref={searchRef}
-          />
-          <br />
-          <div className="flex flex-col w-full overflow-y-auto mt-2">
-          {searchList ? (searchList.map((result) => {
-            return(
-              <section key={result.mal_id} className="w-full h-16 my-4 gap-4 flex bg-slate-200">
-                <Image src={result.images.webp.image_url} alt={result.title} width={300} height={400} className="w-20" />
-                <div className="w-80 py-1 px-3 flex flex-col">
-                  <h2>{result.title}</h2>
-                  <p>synopsis</p>
-                </div>
-              </section>
-            );
-          })) : ("")}
-          </div>
-         </section>
-        </Modal>
         {/* Hamburger button with animation */}
         <div className="md:hidden" onClick={toggleMenu} role="button">
           <motion.div
@@ -109,9 +57,9 @@ const Navbar = () => {
         {/* for large menu */}
         <ul className="hidden gap-2 text-sm md:flex md:gap-6 md:text-lg justify-evenly">
           <li className="px-2 py-2 mt-1 md:px-6 md:py-2">
-            <button onClick={openSearch}>
+            <Link href="/search">
               <MagnifyingGlass size={22} weight="bold" />
-            </button>
+            </Link>
           </li>
           <Link href="/login">
             <li className="px-4 py-2 font-semibold underline md:px-6 md:py-2 dark:text-white animate-pulse">
@@ -135,9 +83,10 @@ const Navbar = () => {
                 initial={{ opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ ease: "easeInOut", duration: 0.5 }}
-                onClick={openSearch}
               >
+                <Link href="/search">
                 Search
+                </Link>
               </motion.h2>
             </div>
             <Link
