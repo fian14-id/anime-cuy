@@ -1,5 +1,5 @@
 import { Montserrat } from "next/font/google";
-import "./globals.css";
+import "./style/globals.css";
 import Navbar from "@/components/utils/Navbar";
 import ToTop from "@/components/utils/ToTop";
 import { Analytics } from "@vercel/analytics/react"
