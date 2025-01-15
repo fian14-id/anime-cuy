@@ -36,13 +36,10 @@ const Page = async () => {
           {page_content.description}
         </motion.p>
         <div className="w-5 mt-8 mouse h-9"></div>
-        <span className="mt-2 text-xs md:text-sm font-semibold uppercase">
+        <span className="mt-2 text-xs font-semibold uppercase md:text-sm">
           scroll down
         </span>
       </main>
-
-      {animePopular ? (
-        <>
         <AnimeList
         api={animePopular}
         setTitle="Popular Anime"
@@ -50,8 +47,7 @@ const Page = async () => {
         addtionalText="See More..."
       />
       <AnimeList api={newSeason} setTitle="New Anime" linkHref="/ongoing" addtionalText="See More..." />
-        </>
-      ) : (<h2 className="text-center">Fail to Fetching Data</h2>)}
+      
     </section>
   );
 };
