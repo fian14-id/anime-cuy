@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
-import { useDataContext } from "@/components/utils/DataContext";
+import { useDataContext } from "@/components/utilities/DataContext";
 
 const InputSearch = () => {
   const { selectedType, setSelectedType } = useDataContext();
@@ -57,7 +57,7 @@ const InputSearch = () => {
             placeholder="search..."
             id="inputSearch"
             ref={searchRef} // Gunakan ref untuk elemen input
-            className="w-1/3 md:w-1/6 md:focus:w-1/3 focus:w-full focus:font-semibold px-8 py-4 outline-none bg-transparent text-center border-b-2 ease-in-out focus:mt-6 duration-300 border-b-[#242424] dark:border-b-white font-light"
+            className="w-1/3 md:w-1/6 md:focus:w-1/3 focus:w-full focus:font-semibold px-8 py-4 outline-none bg-transparent text-center border-b-2 ease-in-out focus:mt-6 duration-300 border-b-palette-accent font-light"
             
           />
         </section>
@@ -65,7 +65,6 @@ const InputSearch = () => {
       <br />
       <h2 className="px-2 mt-6 text-sm font-semibold opacity-30">OR</h2>
       <br />
-      {/* Rest of your form code remains the same */}
     </form>
   );
 };

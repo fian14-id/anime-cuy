@@ -33,9 +33,9 @@ const ToTop = () => {
       {isVisible && (
         <button
           onClick={scrollToTop}
-          className="fixed z-50 p-3 text-white transition-all duration-300 bg-[#242424] rounded-full shadow-lg dark:bg-white bottom-5 right-5 hover:brightness-75"
+          className="fixed z-50 p-3 text-palette-secondary transition-all duration-300 bg-palette-dark rounded-full shadow-lg dark:bg-palette-secondary bottom-5 right-5 hover:brightness-75"
         >
-          <div className="text-white dark:text-[#242424]">
+          <div className="text-palette-secondary dark:text-palette-dark">
           <ArrowUp weight="bold" />
           </div>
         </button>

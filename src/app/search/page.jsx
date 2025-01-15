@@ -1,5 +1,5 @@
-import { genreAnime, genreManga } from "@/config/FetchApi";
-import { DataProvider } from "@/components/utils/DataContext";
+import { fetchGenreAnime, fetchGenreManga } from "@/config/FetchApi";
+import { DataProvider } from "@/components/utilities/DataContext";
 import Genres from "./Genres";
 import InputSearch from "./InputSearch";
 
@@ -12,8 +12,8 @@ export const metadata = {
 }
 
 const Page = async () => {
-  const anime = await genreAnime();
-  const manga = await genreManga();
+  const anime = await fetchGenreAnime();
+  const manga = await fetchGenreManga();
 
   return (
     <DataProvider>

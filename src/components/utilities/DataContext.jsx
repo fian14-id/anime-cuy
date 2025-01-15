@@ -4,7 +4,7 @@ import { createContext, useContext, useState } from 'react';
 const DataContext = createContext();
 
 export const DataProvider = ({ children }) => {
-  const [selectedType, setSelectedType] = useState('anime');
+  const [selectedType, setSelectedType] = useState("all");
 
   return (
     <DataContext.Provider value={{ selectedType, setSelectedType }}>

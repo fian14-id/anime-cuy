@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useDataContext } from "@/components/utils/DataContext";
+import { useDataContext } from "@/components/utilities/DataContext";
 
 const Genres = ({ initialAnimeData, initialMangaData }) => {
   const { selectedType } = useDataContext();
