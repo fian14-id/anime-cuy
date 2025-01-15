@@ -7,12 +7,6 @@ const Page = async () => {
   const animePopular = await fetchPopularAnime();
   const newSeason = await fetchNewAnime();
 
-  if(!animePopular || !newSeason || !animePopular.data || !newSeason.data) {
-    return <div className="flex items-center justify-center w-full h-screen">
-      <h1 className="font-semibold uppercase">Fail to fetching data</h1>
-    </div>
-  }
-
   return (
     <section className="w-full h-full">
       <main className="relative flex flex-col items-center justify-center min-w-full min-h-screen text-center ">
