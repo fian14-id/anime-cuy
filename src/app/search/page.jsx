@@ -1,4 +1,4 @@
-import { fetchGenreAnime, fetchGenreManga } from "@/lib/FetchApi";
+import { fetchDataApi } from "@/lib/FetchApi";
 import { DataProvider } from "@/components/utilities/DataContext";
 import Genres from "./Genres";
 import InputSearch from "./InputSearch";
@@ -11,17 +11,23 @@ export const metadata = {
   }
 }
 
+export const revalidate = 3600
+export const dynamicParams = true
+export const getData = async () => {
+  const data = await fetchDataApi();
+  return data;
+};
+
 const Page = async () => {
-  const anime = await fetchGenreAnime();
-  const manga = await fetchGenreManga();
+  const {genreManga, genreAnime} = await getData();
 
   return (
     <DataProvider>
       <section>
         <InputSearch />
         <Genres 
-          initialAnimeData={anime?.data || []} 
-          initialMangaData={manga?.data || []} 
+          initialAnimeData={genreAnime?.data || []} 
+          initialMangaData={genreManga?.data || []} 
         />
       </section>
     </DataProvider>
