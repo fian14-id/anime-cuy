@@ -1,34 +1,35 @@
 const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
+// Helper function untuk fetch dengan error handling yang konsisten
+const fetchWithErrorHandling = async (url, options = {}) => {
+  try {
+    const response = await fetch(url, {
+      ...options,
+      next: { revalidate: 3600 },
+    });
+
+    if (!response.ok) {
+      throw new Error(`API call failed: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching ${url}:`, error);
+    throw error;
+  }
+};
+
 export const fetchDataApi = async () => {
   try {
-    const [
-      animePopularResponse,
-      allAnimePopularResponse,
-      newSeasonsResponse,
-      allNewSeasonsResponse,
-      genreMangaResponse,
-      genreAnimeResponse,
-    ] = await Promise.all([
-      fetch(`${baseUrl}/top/anime?limit=6`, {next: {revalidate: 3600}}),
-      fetch(`${baseUrl}/top/anime`, {next: {revalidate: 3600}}),
-      fetch(`${baseUrl}/seasons/now?limit=6`, {next: {revalidate: 3600}}),
-      fetch(`${baseUrl}/seasons/now`, {next: {revalidate: 3600}}),
-      fetch(`${baseUrl}/genres/manga`, {next: {revalidate: 3600}}),
-      fetch(`${baseUrl}/genres/anime`, {next: {revalidate: 3600}}),
-    ]);
-    const response = [
-      animePopularResponse,
-      allAnimePopularResponse,
-      newSeasonsResponse,
-      allNewSeasonsResponse,
-      genreMangaResponse,
-      genreAnimeResponse,
+    const endpoints = [
+      `${baseUrl}/top/anime?limit=6`,
+      `${baseUrl}/top/anime`,
+      `${baseUrl}/seasons/now?limit=6`,
+      `${baseUrl}/seasons/now`,
+      `${baseUrl}/genres/manga`,
+      `${baseUrl}/genres/anime`,
     ];
 
-    if (response.some((response) => !response.ok)) {
-      throw new Error("One or more API calls failed");
-    }
     const [
       animePopular,
       allAnimePopular,
@@ -36,62 +37,42 @@ export const fetchDataApi = async () => {
       allNewSeasons,
       genreManga,
       genreAnime,
-    ] = await Promise.all([
-      animePopularResponse.json(),
-      allAnimePopularResponse.json(),
-      newSeasonsResponse.json(),
-      allNewSeasonsResponse.json(),
-      genreMangaResponse.json(),
-      genreAnimeResponse.json(),
-    ]);
+    ] = await Promise.all(endpoints.map(url => fetchWithErrorHandling(url)));
 
     return {
-        animePopular,
-        allAnimePopular,
-        newSeasons,
-        allNewSeasons,
-        genreManga,
-        genreAnime,
+      animePopular,
+      allAnimePopular,
+      newSeasons,
+      allNewSeasons,
+      genreManga,
+      genreAnime,
     };
   } catch (error) {
-    console.error("Error fetching data: ", error);
+    console.error("Error fetching data:", error);
+    // Return empty data structure instead of props object
     return {
-      props: {
-        animePopular: { data: [] },
-        allAnimePopular: { data: [] },
-        newSeasons: { data: [] },
-        allNewSeasons: { data: [] },
-        genreManga: { data: [] },
-        genreAnime: { data: [] },
-      },
+      animePopular: { data: [] },
+      allAnimePopular: { data: [] },
+      newSeasons: { data: [] },
+      allNewSeasons: { data: [] },
+      genreManga: { data: [] },
+      genreAnime: { data: [] },
     };
   }
 };
 
 export const fetchSearchAnime = async (query) => {
-  try {
-    const response = await fetch(`${baseUrl}/anime?q=${query}`);
-    if (!response.ok) {
-      throw new Error("Failed fething anime search result");
-    }
-    const search = response.json();
-    return await search;
-  } catch (err) {
-    console.error("error fetching data: ", err);
-    throw err;
+  if (!query) {
+    throw new Error("Search query is required");
   }
+  
+  return await fetchWithErrorHandling(`${baseUrl}/anime?q=${encodeURIComponent(query)}`);
 };
+
 export const fetchSearchManga = async (query) => {
-  try {
-    const response = await fetch(`${baseUrl}/manga?q=${query}`);
-    if (!response.ok) {
-      throw new Error("Failed fething manga search result");
-    }
-    const search = response.json();
-    // console.log(search)
-    return await search;
-  } catch (err) {
-    console.error("error fetching data: ", err);
-    throw err;
+  if (!query) {
+    throw new Error("Search query is required");
   }
+  
+  return await fetchWithErrorHandling(`${baseUrl}/manga?q=${encodeURIComponent(query)}`);
 };
