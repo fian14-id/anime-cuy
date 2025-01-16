@@ -1,4 +1,4 @@
-import { fetchGenreAnime, fetchGenreManga } from "@/config/FetchApi";
+import { fetchGenreAnime, fetchGenreManga } from "@/lib/FetchApi";
 import { DataProvider } from "@/components/utilities/DataContext";
 import Genres from "./Genres";
 import InputSearch from "./InputSearch";

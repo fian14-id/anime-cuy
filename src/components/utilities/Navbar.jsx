@@ -6,7 +6,7 @@ import { MagnifyingGlass, SignIn } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useDataContext } from "./DataContext";
-import { page_content } from "@/config/setting-app";
+import { page_content } from "@/lib/setting-app";
 import Modal from "./Modal";
 
 const Navbar = () => {

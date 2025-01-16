@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { page_content } from "@/config/setting-app";
+import { page_content } from "@/lib/setting-app";
 
 export default function Unauthorized() {
   const [pageContent, setPageContent] = useState([]);

@@ -27,9 +27,9 @@ export const page_content = {
     ],
     assets: {
         status_code_img: {
-            not_auth: "./401",
-            not_found: "./404",
-            bad_request: "./408",
+            not_auth: "./401.svg",
+            not_found: "./404.svg",
+            bad_request: "./408.svg",
         }
     },
     feature: {

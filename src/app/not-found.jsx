@@ -4,7 +4,7 @@ import Image from "next/image";
 import { ArrowUUpLeft } from "@phosphor-icons/react";
 import * as motion from 'framer-motion/client'
 import { useEffect, useState } from "react";
-import { page_content } from "@/config/setting-app";
+import { page_content } from "@/lib/setting-app";
 
 export default function NotFound() {
   const [pageContent, setPageContent] = useState([]);
