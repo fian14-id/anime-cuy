@@ -1,4 +1,4 @@
-const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+const baseUrl = process.env.NEXT_PUBLIC_API_JIKAN;
 
 // Helper function untuk fetch dengan error handling yang konsisten
 const fetchWithErrorHandling = async (url, options = {}) => {
