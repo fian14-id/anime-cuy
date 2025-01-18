@@ -6,7 +6,7 @@ import { Suspense } from "react";
 import SkeletonLoading from "@/components/AnimeList/SkeletonLoading";
 
 export const revalidate = 3600
-export const dynamicParams = true
+export const dynamicParams = false
 export const getData = async () => {
   const data = await fetchDataApi();
   return data;

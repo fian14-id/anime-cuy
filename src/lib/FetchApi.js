@@ -1,21 +1,18 @@
 const baseUrl = process.env.NEXT_PUBLIC_API_JIKAN;
-
+if (!baseUrl) {
+  throw new Error("NEXT_PUBLIC_API_BASE_URL is not defined");
+}
 // Helper function untuk fetch dengan error handling yang konsisten
 const fetchWithErrorHandling = async (url, options = {}) => {
   try {
-    const response = await fetch(url, {
-      ...options,
-      next: { revalidate: 3600 },
-    });
-
+    const response = await fetch(url, { ...options, next: { revalidate: 3600 } });
     if (!response.ok) {
       throw new Error(`API call failed: ${response.status}`);
     }
-
     return await response.json();
   } catch (error) {
     console.error(`Error fetching ${url}:`, error);
-    throw error;
+    return { data: [] }; // Fallback data
   }
 };
 
