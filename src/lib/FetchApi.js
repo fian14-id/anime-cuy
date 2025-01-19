@@ -1,75 +1,76 @@
+import { cache } from "react";
+
 const baseUrl = process.env.NEXT_PUBLIC_API_JIKAN;
 if (!baseUrl) {
-  throw new Error("NEXT_PUBLIC_API_BASE_URL is not defined");
+  throw new Error("NEXT_PUBLIC_API_JIKAN is not defined");
 }
-// Helper function untuk fetch dengan error handling yang konsisten
-const fetchWithErrorHandling = async (url, options = {}) => {
+
+// Cached fetch handler
+const fetchWithCache = cache(async (url, options = {}) => {
   try {
-    const response = await fetch(url, { ...options, next: { revalidate: 3600 } });
+    const response = await fetch(url, {
+      ...options,
+      next: { revalidate: 3600 }, // Cache for 1 hour
+    });
+
     if (!response.ok) {
       throw new Error(`API call failed: ${response.status}`);
     }
     return await response.json();
   } catch (error) {
     console.error(`Error fetching ${url}:`, error);
-    return { data: [] }; // Fallback data
+    throw error;
   }
-};
+});
 
-export const fetchDataApi = async () => {
+// Cached data fetching for static content
+export const fetchDataApi = cache(async () => {
   try {
     const endpoints = [
       `${baseUrl}/top/anime?limit=6`,
-      `${baseUrl}/top/anime`,
       `${baseUrl}/seasons/now?limit=6`,
-      `${baseUrl}/seasons/now`,
       `${baseUrl}/genres/manga`,
       `${baseUrl}/genres/anime`,
     ];
 
-    const [
-      animePopular,
-      allAnimePopular,
-      newSeasons,
-      allNewSeasons,
-      genreManga,
-      genreAnime,
-    ] = await Promise.all(endpoints.map(url => fetchWithErrorHandling(url)));
+    const [animePopular, newSeasons, genreManga, genreAnime] = 
+      await Promise.all(endpoints.map(url => fetchWithCache(url)));
 
     return {
       animePopular,
-      allAnimePopular,
       newSeasons,
-      allNewSeasons,
       genreManga,
       genreAnime,
     };
   } catch (error) {
     console.error("Error fetching data:", error);
-    // Return empty data structure instead of props object
     return {
       animePopular: { data: [] },
-      allAnimePopular: { data: [] },
       newSeasons: { data: [] },
-      allNewSeasons: { data: [] },
       genreManga: { data: [] },
       genreAnime: { data: [] },
     };
   }
-};
+});
 
+// Dynamic data fetching without cache
 export const fetchSearchAnime = async (query) => {
-  if (!query) {
-    throw new Error("Search query is required");
-  }
-  
-  return await fetchWithErrorHandling(`${baseUrl}/anime?q=${encodeURIComponent(query)}`);
+  if (!query) throw new Error("Search query is required");
+  return await fetchWithCache(`${baseUrl}/anime?sfw&q=${encodeURIComponent(query)}`);
 };
 
 export const fetchSearchManga = async (query) => {
-  if (!query) {
-    throw new Error("Search query is required");
-  }
-  
-  return await fetchWithErrorHandling(`${baseUrl}/manga?q=${encodeURIComponent(query)}`);
+  if (!query) throw new Error("Search query is required");
+  return await fetchWithCache(`${baseUrl}/manga?sfw&q=${encodeURIComponent(query)}`);
 };
+
+// Cached pagination with revalidation
+export const fetchPaginationAnimePopular = cache(async (page) => {
+  if (!page) throw new Error("pagination is required");
+  return await fetchWithCache(`${baseUrl}/top/manga?page=${page}`);
+});
+
+export const fetchPaginationMangaPopular = cache(async (page) => {
+  if (!page) throw new Error("pagination is required");
+  return await fetchWithCache(`${baseUrl}/top/anime?page=${page}`);
+});

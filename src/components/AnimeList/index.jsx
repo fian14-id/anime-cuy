@@ -1,57 +1,90 @@
 "use client";
+
 import PropTypes from "prop-types";
 import Link from "next/link";
 import HeaderList from "./Header";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import SkeletonLoading from "./SkeletonLoading";
 
-const STORAGE_API = "savedDataApi"
+const STORAGE_KEY = "savedDataApi";
+
+const AnimeCard = ({ result }) => (
+  <Link href={`/${result.mal_id}`}>
+    <article className="relative overflow-hidden rounded-lg group">
+      <Image
+        src={result.images.webp.image_url}
+        alt={result.title}
+        width={900}
+        height={1600}
+        className="w-full aspect-[9/16] transition-transform duration-300 group-hover:scale-105"
+        loading="lazy"
+      />
+      <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-palette-primary to-transparent">
+        <h3 className="font-semibold text-white">
+          {result.title.length > 25 ? `${result.title.slice(0, 25)}...` : result.title}
+        </h3>
+        {result.genres && (
+          <p className="text-sm text-white/80">
+            {result.genres.map((genre, i) => (
+              <span key={genre.mal_id}>
+                {genre.name}{i < result.genres.length - 1 && ", "}
+              </span>
+            ))}
+          </p>
+        )}
+      </div>
+    </article>
+  </Link>
+);
 
 const AnimeList = ({ api, setTitle, linkHref, addtionalText }) => {
-  const [isApi, setIsApi] = useState(api || { data: [] })
-  const [isLoading, setIsLoading] = useState(true)
+  const [animeData, setAnimeData] = useState(api || { data: [] });
+  const [isLoading, setIsLoading] = useState(true);
+
+  const saveToLocalStorage = useCallback((data) => {
+    try {
+      if (data?.data) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      }
+    } catch (error) {
+      console.error("Error saving to localStorage:", error);
+    }
+  }, []);
+
+  const loadFromLocalStorage = useCallback(() => {
+    try {
+      const savedData = localStorage.getItem(STORAGE_KEY);
+      if (savedData) {
+        const parsedData = JSON.parse(savedData);
+        if (parsedData?.data) {
+          setAnimeData(parsedData);
+          return true;
+        }
+      }
+      return false;
+    } catch (error) {
+      console.error("Failed to load data from localStorage:", error);
+      return false;
+    }
+  }, []);
 
   useEffect(() => {
-
-    const saveToLocalStorage = (data) => {
-      try {
-        if (data && data.data) {
-          localStorage.setItem(STORAGE_API, JSON.stringify(api));
-        } 
-      } catch (error) {
-        console.error("Error saving to localStorage: ", error);
-      }
-    }
-    const loadFromLocalStorage = () => {
-      try {
-        const savedApi = localStorage.getItem(STORAGE_API);
-        if (savedApi) {
-          const parseData = JSON.parse(savedApi);
-          if (parseData && parseData.data) {
-            setIsApi(parseData);
-          }
-        }
-      } catch (error) {
-        console.error("Failded to load data from localStorage: ", error)
-      }
-    }
-    const loadData = async() => {
+    const loadData = async () => {
       setIsLoading(true);
       if (api) {
-        setIsApi(api);
-        saveToLocalStorage();
+        setAnimeData(api);
+        saveToLocalStorage(api);
+      } else {
+        loadFromLocalStorage();
       }
       setIsLoading(false);
-    }
+    };
 
     loadData();
-  }, [api])
+  }, [api, saveToLocalStorage, loadFromLocalStorage]);
 
-
-  if (isLoading) {
-    return <SkeletonLoading />;
-  }
+  if (isLoading) return <SkeletonLoading />;
 
   return (
     <>
@@ -60,36 +93,17 @@ const AnimeList = ({ api, setTitle, linkHref, addtionalText }) => {
         getLink={linkHref}
         getAddText={addtionalText}
       />
-      <section className="grid w-full grid-cols-2 gap-8 p-4 md:gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-        {isApi?.data?.length > 0 ? (
-          isApi.data.map((result) => {
-            return (
-              <Link href={`/${result.mal_id}`} key={result.mal_id}>
-                <main className="w-full h-72 sm:h-full relative overflow-hidden text-center aspect-[9/16] duration-500 ease-in-out bg-center bg-cover rounded-sm  hover:shadow-2xl hover:bg-top hover:z-10 hover:scale-105 flex items-end justify-center text-palette-secondary">
-                  <Image
-                    src={result.images.webp.image_url}
-                    alt={result.title}
-                    width={900}
-                    height={1600}
-                    className="w-full aspect-[9/16] z-10 absolute bottom-0 left-0"
-                    loading="lazy"
-                  />
-                  <div className="absolute bottom-0 z-20 w-full h-auto pt-2 bg-gradient-to-t from-palette-dark to-transparent">
-                    <h3 className="px-4 py-2 text-xs font-black uppercase sm:text-md md:text-xl">
-                      {result.title.length > 25 ? `${result.title.slice(0, 25)}...` : result.title}
-                    </h3>
-                    <p className="pb-2 text-sm font-bold text-palette-grey-600">
-                      {result.score}
-                    </p>
-                  </div>
-                </main>
-              </Link>
-            );
-          })
+      <div className="grid grid-cols-2 gap-4 p-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+        {animeData?.data?.length > 0 ? (
+          animeData.data.map((result) => (
+            <AnimeCard key={result.mal_id} result={result} />
+          ))
         ) : (
-          <h1>Can't be found :(</h1>
+          <div className="py-8 text-center col-span-full">
+            <p className="text-lg font-semibold">No anime found</p>
+          </div>
         )}
-      </section>
+      </div>
     </>
   );
 };
@@ -106,11 +120,18 @@ AnimeList.propTypes = {
             image_url: PropTypes.string.isRequired,
           }).isRequired,
         }).isRequired,
+        genres: PropTypes.arrayOf(
+          PropTypes.shape({
+            mal_id: PropTypes.number.isRequired,
+            name: PropTypes.string.isRequired,
+          })
+        ),
       }).isRequired
     ).isRequired,
   }).isRequired,
   setTitle: PropTypes.string.isRequired,
   linkHref: PropTypes.string.isRequired,
+  addtionalText: PropTypes.string,
 };
 
 export default AnimeList;
