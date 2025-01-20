@@ -1,31 +1,107 @@
+// lib/fetchApi.js
 import { cache } from "react";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_JIKAN;
-if (!baseUrl) {
-  throw new Error("NEXT_PUBLIC_API_JIKAN is not defined");
-}
+const CACHE_DURATION = 3600; // 1 hour in seconds
 
-// Cached fetch handler
-const fetchWithCache = cache(async (url, options = {}) => {
+// Rate limiting helper
+const rateLimiter = {
+  tokens: 60,
+  lastRefill: Date.now(),
+  
+  async getToken() {
+    const now = Date.now();
+    const timePassed = now - this.lastRefill;
+    if (timePassed >= 60000) {
+      this.tokens = 60;
+      this.lastRefill = now;
+    }
+    
+    if (this.tokens > 0) {
+      this.tokens--;
+      return true;
+    }
+    
+    return new Promise(resolve => {
+      setTimeout(async () => {
+        resolve(await this.getToken());
+      }, 1000);
+    });
+  }
+};
+
+// Safely check if we're on client side
+const isClient = typeof window !== 'undefined';
+
+// Enhanced fetch with retry logic
+const enhancedFetch = cache(async (url, options = {}, retries = 3) => {
+  await rateLimiter.getToken();
+  
   try {
     const response = await fetch(url, {
       ...options,
-      next: { revalidate: 3600 }, // Cache for 1 hour
+      next: { revalidate: CACHE_DURATION },
     });
-
+    
+    if (response.status === 429 && retries > 0) {
+      console.log(`Rate limited, retrying in 2 seconds... (${retries} retries left)`);
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      return enhancedFetch(url, options, retries - 1);
+    }
+    
     if (!response.ok) {
       throw new Error(`API call failed: ${response.status}`);
     }
+    
     return await response.json();
   } catch (error) {
-    console.error(`Error fetching ${url}:`, error);
+    if (retries > 0 && error.message.includes('failed')) {
+      console.log(`Request failed, retrying... (${retries} retries left)`);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      return enhancedFetch(url, options, retries - 1);
+    }
     throw error;
   }
 });
 
-// Cached data fetching for static content
+// Safe localStorage operations
+const storage = {
+  get: (key) => {
+    if (!isClient) return null;
+    try {
+      const item = localStorage.getItem(key);
+      return item ? JSON.parse(item) : null;
+    } catch (e) {
+      console.error('Error reading from localStorage:', e);
+      return null;
+    }
+  },
+  
+  set: (key, value) => {
+    if (!isClient) return;
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch (e) {
+      console.error('Error writing to localStorage:', e);
+    }
+  }
+};
+
+// Enhanced data fetching with safe local storage fallback
 export const fetchDataApi = cache(async () => {
+  const STORAGE_KEY = 'anime_data_cache';
+  const MAX_CACHE_AGE = 3600000; // 1 hour in milliseconds
+  
   try {
+    // Try to get data from localStorage if we're on client side
+    const cachedData = storage.get(STORAGE_KEY);
+    if (cachedData) {
+      const { timestamp, data } = cachedData;
+      if (Date.now() - timestamp < MAX_CACHE_AGE) {
+        return data;
+      }
+    }
+    
     const endpoints = [
       `${baseUrl}/top/anime?limit=6`,
       `${baseUrl}/seasons/now?limit=6`,
@@ -34,16 +110,32 @@ export const fetchDataApi = cache(async () => {
     ];
 
     const [animePopular, newSeasons, genreManga, genreAnime] = 
-      await Promise.all(endpoints.map(url => fetchWithCache(url)));
+      await Promise.all(endpoints.map(url => enhancedFetch(url)));
 
-    return {
+    const result = {
       animePopular,
       newSeasons,
       genreManga,
       genreAnime,
     };
+    
+    // Save to localStorage if we're on client side
+    storage.set(STORAGE_KEY, {
+      timestamp: Date.now(),
+      data: result
+    });
+
+    return result;
   } catch (error) {
     console.error("Error fetching data:", error);
+    
+    // Try to get cached data even if expired
+    const cachedData = storage.get(STORAGE_KEY);
+    if (cachedData) {
+      return cachedData.data;
+    }
+    
+    // Fallback data if everything fails
     return {
       animePopular: { data: [] },
       newSeasons: { data: [] },
@@ -53,24 +145,23 @@ export const fetchDataApi = cache(async () => {
   }
 });
 
-// Dynamic data fetching without cache
+// Specific fetch functions
 export const fetchSearchAnime = async (query) => {
   if (!query) throw new Error("Search query is required");
-  return await fetchWithCache(`${baseUrl}/anime?sfw&q=${encodeURIComponent(query)}`);
+  return await enhancedFetch(`${baseUrl}/anime?sfw&q=${encodeURIComponent(query)}`);
 };
 
 export const fetchSearchManga = async (query) => {
   if (!query) throw new Error("Search query is required");
-  return await fetchWithCache(`${baseUrl}/manga?sfw&q=${encodeURIComponent(query)}`);
+  return await enhancedFetch(`${baseUrl}/manga?sfw&q=${encodeURIComponent(query)}`);
 };
 
-// Cached pagination with revalidation
 export const fetchPaginationAnimePopular = cache(async (page) => {
   if (!page) throw new Error("pagination is required");
-  return await fetchWithCache(`${baseUrl}/top/manga?page=${page}`);
+  return await enhancedFetch(`${baseUrl}/top/manga?page=${page}`);
 });
 
 export const fetchPaginationMangaPopular = cache(async (page) => {
   if (!page) throw new Error("pagination is required");
-  return await fetchWithCache(`${baseUrl}/top/anime?page=${page}`);
+  return await enhancedFetch(`${baseUrl}/top/anime?page=${page}`);
 });

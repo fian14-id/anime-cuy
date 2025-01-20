@@ -58,7 +58,7 @@ const Page = async () => {
         <AnimeList
           api={animePopular}
           setTitle="Popular Anime"
-          linkHref="/popular"
+          linkHref="/popular/anime"
           addtionalText="See More..."
         />
       </Suspense>

@@ -21,11 +21,11 @@ const AnimeCard = ({ result }) => (
         loading="lazy"
       />
       <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-palette-primary to-transparent">
-        <h3 className="font-semibold text-white">
+        <h3 className="font-semibold text-palette-secondary">
           {result.title.length > 25 ? `${result.title.slice(0, 25)}...` : result.title}
         </h3>
         {result.genres && (
-          <p className="text-sm text-white/80">
+          <p className="text-sm text-palette-secondary/80">
             {result.genres.map((genre, i) => (
               <span key={genre.mal_id}>
                 {genre.name}{i < result.genres.length - 1 && ", "}
@@ -100,7 +100,7 @@ const AnimeList = ({ api, setTitle, linkHref, addtionalText }) => {
           ))
         ) : (
           <div className="py-8 text-center col-span-full">
-            <p className="text-lg font-semibold">No anime found</p>
+            <p className="text-lg font-semibold">No anime found. <sub>Tips: Coba refresh halaman.</sub></p>
           </div>
         )}
       </div>
