@@ -50,7 +50,7 @@ const Navbar = () => {
       } else {
         alert("Insert a search keyword!");
       }
-      localStorage.setItem("lastSearchQuery", keyword)
+      localStorage.setItem("lastSearchQuery", keyword);
     }
     setSearchOpen(false);
   };
@@ -58,21 +58,20 @@ const Navbar = () => {
     localStorage.setItem("savedContent", JSON.stringify(page_content));
     const savedPageContent = localStorage.getItem("savedContent");
     const savedQuery = localStorage.getItem("lastSearchQuery");
-    if(savedQuery) setSearchContent(savedQuery)
-    if(savedPageContent) setPageContent(JSON.parse(savedPageContent));
-  }, [])
+    if (savedQuery) setSearchContent(savedQuery);
+    if (savedPageContent) setPageContent(JSON.parse(savedPageContent));
+  }, []);
   useEffect(() => {
-    const handleKeySearch =
-      (e) => {
-        if (
-          (e.ctrlKey && e.key === "k") ||
-          (e.ctrlKey && e.key === "K") ||
-          e.key === "/"
-        ) {
-          e.preventDefault();
-          setSearchOpen((prev) => !prev);
-        }
-      };
+    const handleKeySearch = (e) => {
+      if (
+        (e.ctrlKey && e.key === "k") ||
+        (e.ctrlKey && e.key === "K") ||
+        e.key === "/"
+      ) {
+        e.preventDefault();
+        setSearchOpen((prev) => !prev);
+      }
+    };
     window.addEventListener("keydown", handleKeySearch);
     return () => window.removeEventListener("keydown", handleKeySearch);
   }, []);
@@ -82,18 +81,21 @@ const Navbar = () => {
       initial={{ opacity: 0, y: -100 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ ease: "easeInOut", duration: 0.5 }}
-      className="sticky top-0 z-30 backdrop-blur-sm backdrop-opacity-80 flex items-center justify-between w-full px-4 py-2 md:px-8 md:py-6"
+      className="sticky top-0 z-30 flex items-center justify-between w-full px-4 py-2 backdrop-blur-sm backdrop-opacity-80 md:px-8 md:py-6"
     >
       <Link href="/">
         <span className="text-lg font-bold md:text-xl lg:text-2xl">
           {pageContent?.logo_app ? (
-            <Image
-              className="py-2"
-              src={pageContent.logo_app}
-              width={100}
-              height={100}
-              alt={pageContent.name_page}
-            />
+            <div className="flex items-center gap-2">
+              <Image
+                className="py-2 "
+                src={pageContent.logo_app}
+                width={65}
+                height={65}
+                alt={pageContent.name_page}
+              />{" "}
+              <span className="font-semibold text-transparent bg-none bg-clip-text md:bg-palette-secondary">{pageContent.name_page}</span>
+            </div>
           ) : (
             pageContent.name_page
           )}
@@ -106,7 +108,7 @@ const Navbar = () => {
             onSubmit={handleSearch}
             className="flex flex-col justify-center mt-2 bg-palette-secondary/[0.5] backdrop-blur-md"
           >
-            <main className="w-full flex justify-center items-center mt-2 gap-2">
+            <main className="flex items-center justify-center w-full gap-2 mt-2">
               <MagnifyingGlass
                 size={32}
                 weight="fill"
@@ -118,27 +120,38 @@ const Navbar = () => {
                 ref={searchRef}
                 value={searchContent}
                 onChange={(e) => setSearchContent(e.target.value)}
-                className="px-4 py-2 w-full border-b-2 border-b-palette-primary focus:outline-none bg-transparent placeholder:text-palette-primary"
+                className="w-full px-4 py-2 bg-transparent border-b-2 border-b-palette-primary focus:outline-none placeholder:text-palette-primary"
                 autoFocus
               />
-              {searchContent.trim() ? (<button type="submit" className="border-b-palette-primary border-b-2 text-palette-primary p-2">Go</button>) : ""}
+              {searchContent.trim() ? (
+                <button
+                  type="submit"
+                  className="p-2 border-b-2 border-b-palette-primary text-palette-primary"
+                >
+                  Go
+                </button>
+              ) : (
+                ""
+              )}
             </main>
             <main className="mt-4">
               {page_content?.feature?.search_type ? (
                 page_content.feature.search_type.map((type, i) => {
                   return (
-                    <section key={i} className="relative flex px-4 py-2 gap-2">
+                    <section key={i} className="relative flex gap-2 px-4 py-2">
                       <input
                         type="radio"
                         id={type.name_type}
                         value={type.value}
                         checked={selectedType === type.value}
                         onChange={handleChangeOption}
-                        className="appearance-none w-full h-full absolute top-0 left-0 transtiion-all ease-in duration-75 border-l-0 checked:border-l-4 outline-none border-palette-primary rounded-sm "
+                        className="absolute top-0 left-0 w-full h-full duration-75 ease-in border-l-0 rounded-sm outline-none appearance-none transtiion-all checked:border-l-4 border-palette-primary "
                       />
                       <label htmlFor={type.name_type} className="ml-4">
                         <h3 className="font-medium">{type.label_type}</h3>
-                        <p className="text-xs">Search by {type.label_type} type</p>
+                        <p className="text-xs">
+                          Search by {type.label_type} type
+                        </p>
                       </label>
                     </section>
                   );
@@ -169,11 +182,11 @@ const Navbar = () => {
         {/* for large menu */}
         <ul className="hidden gap-2 text-sm md:flex md:gap-6 md:text-lg justify-evenly">
           <li
-            className="px-4 mt-1 flex justify-between items-center gap-4 cursor-pointer text-sm border-b-2 border-palette-accent text-palette-secondary "
+            className="flex items-center justify-between gap-4 px-4 mt-1 text-sm border-b-2 cursor-pointer border-palette-accent text-palette-secondary "
             onClick={openSearch}
           >
             <span>Quick search...</span>
-            <kbd className="bg-palette-secondary text-xs px-2 text-palette-dark rounded-sm">
+            <kbd className="px-2 text-xs rounded-sm bg-palette-secondary text-palette-dark">
               <abbr title="Control">Ctrl </abbr>K
             </kbd>
           </li>
@@ -190,7 +203,7 @@ const Navbar = () => {
             animate={{ height: "auto" }}
             exit={{ height: 0 }}
             transition={{ duration: 0.3 }}
-            className="absolute left-0 z-50 flex flex-col px-6 items-end mt-8 min-w-full min-h-screen gap-10 text-xl font-bold md:hidden"
+            className="absolute left-0 z-50 flex flex-col items-end min-w-full min-h-screen gap-10 px-6 mt-8 text-xl font-bold md:hidden"
           >
             <div
               className="transition-all ease-in-out hover:scale-125"

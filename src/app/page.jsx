@@ -10,7 +10,7 @@ export const dynamicParams = false;
 
 // Metadata
 export const metadata = {
-  title: "Anime List",
+  title: page_content.name_page,
   description: "Discover your favorite anime",
 };
 

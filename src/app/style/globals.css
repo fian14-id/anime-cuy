@@ -42,7 +42,7 @@
 
 ::selection {
   color: var(--color-primary);
-  background: var(--color-accent);
+  background: var(--color-sekunder);
 }
 
 body {

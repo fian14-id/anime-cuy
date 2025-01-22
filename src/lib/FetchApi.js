@@ -158,10 +158,10 @@ export const fetchSearchManga = async (query) => {
 
 export const fetchPaginationAnimePopular = cache(async (page) => {
   if (!page) throw new Error("pagination is required");
-  return await enhancedFetch(`${baseUrl}/top/manga?page=${page}`);
+  return await enhancedFetch(`${baseUrl}/top/anime?page=${page}`);
 });
 
 export const fetchPaginationMangaPopular = cache(async (page) => {
   if (!page) throw new Error("pagination is required");
-  return await enhancedFetch(`${baseUrl}/top/anime?page=${page}`);
+  return await enhancedFetch(`${baseUrl}/top/manga?page=${page}`);
 });

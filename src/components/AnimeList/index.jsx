@@ -10,10 +10,10 @@ import SkeletonLoading from "./SkeletonLoading";
 const STORAGE_KEY = "savedDataApi";
 
 const AnimeCard = ({ result }) => (
-  <Link href={`/${result.mal_id}`}>
+  <Link href={`/${result.demographics.type}/${result.mal_id}`}>
     <article className="relative overflow-hidden rounded-lg group">
       <Image
-        src={result.images.webp.image_url}
+        src={result.images.jpg.large_image_url}
         alt={result.title}
         width={900}
         height={1600}
@@ -100,7 +100,8 @@ const AnimeList = ({ api, setTitle, linkHref, addtionalText }) => {
           ))
         ) : (
           <div className="py-8 text-center col-span-full">
-            <p className="text-lg font-semibold">No anime found. <sub>Tips: Coba refresh halaman.</sub></p>
+            <p className="text-lg font-semibold">No anime found.</p>
+            <p className="text-sm font-medium">Suggestion: Try refreshing the page.</p>
           </div>
         )}
       </div>
@@ -115,9 +116,10 @@ AnimeList.propTypes = {
         mal_id: PropTypes.number.isRequired,
         title: PropTypes.string.isRequired,
         score: PropTypes.number.isRequired,
+        demographics: PropTypes.string.isRequired,
         images: PropTypes.shape({
-          webp: PropTypes.shape({
-            image_url: PropTypes.string.isRequired,
+          jpg: PropTypes.shape({
+            large_image_url: PropTypes.string.isRequired,
           }).isRequired,
         }).isRequired,
         genres: PropTypes.arrayOf(
