@@ -6,6 +6,7 @@ import { page_content } from "@/lib/setting-app";
 import { Analytics } from "@vercel/analytics/react";
 import { DataProvider } from "@/components/utilities/DataContext";
 import ErrorBoundary from "@/components/utilities/ErrorBoundary";
+import Footer from "@/components/utilities/Footer";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -39,6 +40,7 @@ export default function RootLayout({ children }) {
           {children}
         </ErrorBoundary>
         <ToTop />
+        <Footer />
       </body>
     </html>
   );

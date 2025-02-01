@@ -25,18 +25,18 @@ const Banner = ({
   return (
     <div className={`w-full ${variants[variant]} ${className}`}>
       {variant === "image" && image && (
-        <div className="absolute inset-0 w-full h-full">
+        <div className="absolute inset-0 w-full h-full shadow-md rounded-md">
           <div className="absolute inset-0 bg-black/50 z-[1]" /> {/* Overlay */}
           <img 
             src={image} 
             alt={title}
-            className="w-full h-full object-cover brightness-50"
+            className="w-full h-full object-cover brightness-50 px-4 md:px-6 blur-sm"
           />
         </div>
       )}
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="py-8 sm:py-12">
+        <div className="py-8 px-4 md:px-6 sm:py-12">
           {/* Title Section */}
           <div className="text-center">
             {title && (

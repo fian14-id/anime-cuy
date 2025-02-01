@@ -67,7 +67,7 @@ const Page = async () => {
         <AnimeList
           api={newSeasons}
           setTitle="New Seasons"
-          linkHref="/ongoing"
+          linkHref="/now"
           addtionalText="See More..."
         />
       </Suspense>

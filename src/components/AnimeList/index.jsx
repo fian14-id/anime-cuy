@@ -10,7 +10,7 @@ import SkeletonLoading from "./SkeletonLoading";
 const STORAGE_KEY = "savedDataApi";
 
 const AnimeCard = ({ result }) => (
-  <Link href={`/${result.demographics.type}/${result.mal_id}`}>
+  <Link href={`/${result?.genres?.[0]?.type}/${result.mal_id}`}>
     <article className="relative overflow-hidden rounded-lg group">
       <Image
         src={result.images.jpg.large_image_url}

@@ -7,22 +7,22 @@ export const page_content = {
         {
             name: "WhatsApp",
             link: "https://bit.ly/FianityChat",
-            icon: "whatsapp",
+            icon: "./whatsapp.svg",
         },
         {
             name: "Github",
             link: "https://github.com/fian14-id",
-            icon: "github",
+            icon: "./github.svg",
         },
         {
             name: "Instagram",
             link: "https://www.instagram.com/fianity_id",
-            icon: "instagram",            
+            icon: "./instagram.svg",            
         },
         {
             name: "Ko-Fi",
             link: "https://ko-fi.com/fianity",
-            icon: "kofi",            
+            icon: "./coffee.svg",            
         },
     ],
     assets: {

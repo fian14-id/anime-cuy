@@ -148,20 +148,121 @@ export const fetchDataApi = cache(async () => {
 // Specific fetch functions
 export const fetchSearchAnime = async (query) => {
   if (!query) throw new Error("Search query is required");
-  return await enhancedFetch(`${baseUrl}/anime?sfw&q=${encodeURIComponent(query)}`);
+  return await enhancedFetch(`${baseUrl}/anime?q=${encodeURIComponent(query)}`);
 };
 
 export const fetchSearchManga = async (query) => {
   if (!query) throw new Error("Search query is required");
-  return await enhancedFetch(`${baseUrl}/manga?sfw&q=${encodeURIComponent(query)}`);
+  return await enhancedFetch(`${baseUrl}/manga?q=${encodeURIComponent(query)}`);
 };
 
 export const fetchPaginationAnimePopular = cache(async (page) => {
   if (!page) throw new Error("pagination is required");
   return await enhancedFetch(`${baseUrl}/top/anime?page=${page}`);
 });
-
 export const fetchPaginationMangaPopular = cache(async (page) => {
   if (!page) throw new Error("pagination is required");
-  return await enhancedFetch(`${baseUrl}/top/manga?page=${page}`);
+  return await enhancedFetch(`${baseUrl}/manga/manga?page=${page}`);
+});
+export const fetchPaginationNow = cache(async (page) => {
+  if (!page) throw new Error("pagination is required");
+  return await enhancedFetch(`${baseUrl}/seasons/now?page=${page}`);
+});
+export const fetchDetailsAnime = cache(async (id) => {
+  if (!id) throw new Error("id is required");
+
+  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+  let attempts = 0;
+  const maxAttempts = 3;
+
+  while (attempts < maxAttempts) {
+    try {
+      if (attempts > 0) {
+        await delay(1000 * (attempts + 1));
+      }
+
+      const response = await fetch(`${baseUrl}/anime/${id}/full`, {
+        next: { revalidate: CACHE_DURATION }
+      });
+
+      if (response.status === 429) {
+        console.log(`rate limited, waiting before retry...`);
+        attempts++;
+        continue;
+      }
+
+      if (response.status === 404) {
+        return {
+          data: null,
+          error: "Anime tidak ditemukan!"
+        };
+      }
+
+      if (!response.ok) {
+        throw new Error(`Api Call Failed: ${response.status}`);
+      }
+
+      const data = response.json()
+      return data;
+    } catch (error) {
+      attempts++;
+      if (attempts === maxAttempts) {
+        throw error;
+      }
+      console.log(`Request failed, attempt ${attempts} of ${maxAttempts}`);
+    }
+  }
+  return await enhancedFetch(`${baseUrl}/anime/${id}/full`);
+});
+export const fetchDetailsManga = cache(async (id) => {
+  if (!id) throw new Error("id is required");
+  
+  // Tambahkan delay helper
+  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+  
+  let attempts = 0;
+  const maxAttempts = 3;
+  
+  while (attempts < maxAttempts) {
+    try {
+      // Tambahkan delay antara requests untuk menghindari rate limiting
+      if (attempts > 0) {
+        await delay(1000 * (attempts + 1)); // Exponential backoff
+      }
+      
+      const response = await fetch(`${baseUrl}/manga/${id}/full`, {
+        next: { revalidate: CACHE_DURATION }
+      });
+      
+      // Handle rate limiting
+      if (response.status === 429) {
+        console.log(`Rate limited, waiting before retry...`);
+        attempts++;
+        continue;
+      }
+      
+      // Handle 404
+      if (response.status === 404) {
+        return {
+          data: null,
+          error: "Manga tidak ditemukan"
+        };
+      }
+      
+      if (!response.ok) {
+        throw new Error(`API call failed: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data;
+      
+    } catch (error) {
+      attempts++;
+      if (attempts === maxAttempts) {
+        throw error;
+      }
+      console.log(`Request failed, attempt ${attempts} of ${maxAttempts}`);
+    }
+  }
 });
