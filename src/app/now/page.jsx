@@ -40,7 +40,11 @@ const Page = () => {
           fetchDatanow();
     }, [fetchDatanow]);
 
-    const getSynopsis = now?.data?.[randomPage]?.synopsis.length > 100 && now?.data?.[randomPage]?.synopsis.slice(0, 100)
+    const getSynopsis = (() => {
+        const synopsis = now?.data?.[randomPage]?.synopsis;
+        if (!synopsis) return "";
+        return synopsis.length > 100 ? `${synopsis.slice(0, 100)}...` : synopsis;
+    })();
     const getImageRandom = now?.data?.[randomPage]?.images?.webp?.image_url
     return (
         <section>

@@ -40,7 +40,11 @@ const Page = () => {
           fetchDataPopular();
     }, [fetchDataPopular]);
 
-    const getSynopsis = popular?.data?.[randomPage]?.synopsis.length > 100 && popular?.data?.[randomPage]?.synopsis.slice(0, 100)
+    const getSynopsis = (() => {
+        const synopsis = popular?.data?.[randomPage]?.synopsis;
+        if (!synopsis) return "";
+        return synopsis.length > 100 ? `${synopsis.slice(0, 100)}...` : synopsis;
+    })();
     const getImageRandom = popular?.data?.[randomPage]?.images?.webp?.image_url
     return (
         <section>
