@@ -4,7 +4,7 @@ import AnimeList from "@/components/AnimeList";
 import SkeletonLoading from "@/components/AnimeList/SkeletonLoading";
 import Banner from "@/components/utilities/Banner";
 import Pagination from "@/components/utilities/Pagination";
-import { fetchPaginationNow } from "@/lib/FetchApi";
+import { fetchPaginationNow } from "@/libs/fetch-api";
 import { useState, useEffect, useCallback } from "react";
 
 const Page = () => {

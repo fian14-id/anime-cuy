@@ -1,8 +1,8 @@
 import { Suspense } from "react";
 import * as motion from "framer-motion/client";
 import AnimeList from "@/components/AnimeList";
-import { fetchDataApi } from "@/lib/FetchApi";
-import { page_content } from "@/lib/setting-app";
+import { fetchApi } from "@/libs/fetch-api";
+import { page_content } from "@/libs/setting-app";
 import SkeletonLoading from "@/components/AnimeList/SkeletonLoading";
 
 export const revalidate = 3600;
@@ -13,11 +13,6 @@ export const metadata = {
   title: page_content.name_page,
   description: "Discover your favorite anime",
 };
-
-// Static data fetching
-async function getData() {
-  return await fetchDataApi();
-}
 
 // Hero section component
 const HeroSection = ({ backgroundImage }) => (
@@ -47,7 +42,8 @@ const HeroSection = ({ backgroundImage }) => (
 );
 
 const Page = async () => {
-  const { animePopular, newSeasons } = await getData();
+  const animePopular = await fetchApi("top/anime", "limit=6");
+  const newSeasons = await fetchApi("seasons/now", "limit=6");
   const heroBackgroundImage = animePopular?.data?.[0]?.images?.webp?.image_url;
 
   return (

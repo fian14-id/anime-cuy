@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { page_content } from "@/lib/setting-app";
+import { page_content } from "@/libs/setting-app";
 import Link from "next/link";
 
 const Footer = () => {
@@ -32,25 +32,7 @@ const Footer = () => {
         )}
       </span>
       <ul className="flex items-center justify-center gap-4">
-        {pageContent?.social_media ? (
-          pageContent?.social_media?.map((media, i) => {
-            return (
-              <li key={i}>
-                <Link href={media.link} target="_blank" className="flex items-center justify-center gap-2">
-                  <Image
-                    className="invert brightness-200"
-                    src={media.icon}
-                    width={20}
-                    height={20}
-                  />
-                  <h1 className="text-xs font-semibold md:text-sm">{media.name}</h1>
-                </Link>
-              </li>
-            );
-          })
-        ) : (
-          <li>Made with ❤ by Fianity</li>
-        )}
+          <li>Made with 🧡 by <Link href="https://fianity.com" target="_blank" className="text-palette-accent font-semibold" >Fianity</Link></li>
       </ul>
     </footer>
   );

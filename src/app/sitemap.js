@@ -1,6 +1,6 @@
 // File: app/sitemap.js
 
-import { fetchSearchAnime, fetchSearchManga } from "@/lib/FetchApi"
+import { fetchSearchAnime, fetchSearchManga } from "@/libs/fetch-api"
 import { parseISO } from 'date-fns'
 
 const BASE_URL = "https://nexanime.fianity.com";

@@ -1,4 +1,4 @@
-import { fetchSearchAnime, fetchSearchManga } from "@/lib/FetchApi"
+import { fetchSearchAnime, fetchSearchManga } from "@/libs/fetch-api"
 import AnimeList from "@/components/AnimeList"
 
 export async function generateMetadata({ params }) {
@@ -10,8 +10,8 @@ export async function generateMetadata({ params }) {
     return {
       title: `${capitalizeWords(getParams)} | Search`,
       openGraph: {
-      title: `${capitalizeWords(getParams)} | Search`,
-      description: `Searching for your favorite anime and manga from the keyword ${capitalizeWords(getParams)}`,
+        title: `${capitalizeWords(getParams)} | Search`,
+        description: `Searching for your favorite anime and manga from the keyword ${capitalizeWords(getParams)}`,
     }
   }
   }

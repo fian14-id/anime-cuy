@@ -2,7 +2,7 @@ import { Montserrat } from "next/font/google";
 import "./style/globals.css";
 import Navbar from "@/components/utilities/Navbar";
 import ToTop from "@/components/utilities/ToTop";
-import { page_content } from "@/lib/setting-app";
+import { page_content } from "@/libs/setting-app";
 import { Analytics } from "@vercel/analytics/react";
 import { DataProvider } from "@/components/utilities/DataContext";
 import ErrorBoundary from "@/components/utilities/ErrorBoundary";

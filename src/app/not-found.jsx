@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "@phosphor-icons/react";
 import * as motion from 'framer-motion/client';
-import { page_content } from "@/lib/setting-app";
+import { page_content } from "@/libs/setting-app";
 
 export default function NotFound() {
   return (

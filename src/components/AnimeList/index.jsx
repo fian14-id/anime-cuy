@@ -25,7 +25,7 @@ const AnimeCard = ({ result }) => (
           {result.title.length > 25 ? `${result.title.slice(0, 25)}...` : result.title}
         </h3>
         {result.genres && (
-          <p className="text-sm text-palette-secondary/80">
+          <p className="text-xs md:text-sm text-palette-secondary/80">
             {result.genres.map((genre, i) => (
               <span key={genre.mal_id}>
                 {genre.name}{i < result.genres.length - 1 && ", "}

@@ -1,4 +1,4 @@
-import { fetchSearchAnime } from "@/lib/FetchApi"
+import { fetchSearchAnime } from "@/libs/fetch-api"
 import AnimeList from "@/components/AnimeList"
 export async function generateMetadata({ params }) {
   const { keyword } = params;

@@ -7,29 +7,29 @@ export const page_content = {
         {
             name: "WhatsApp",
             link: "https://bit.ly/FianityChat",
-            icon: "./whatsapp.svg",
+            icon: "/whatsapp.svg",
         },
         {
             name: "Github",
             link: "https://github.com/fian14-id",
-            icon: "./github.svg",
+            icon: "/github.svg",
         },
         {
             name: "Instagram",
             link: "https://www.instagram.com/fianity_id",
-            icon: "./instagram.svg",            
+            icon: "/instagram.svg",            
         },
         {
             name: "Ko-Fi",
             link: "https://ko-fi.com/fianity",
-            icon: "./coffee.svg",            
+            icon: "/coffee.svg",            
         },
     ],
     assets: {
         status_code_img: {
-            not_auth: "./401.svg",
-            not_found: "./404.svg",
-            bad_request: "./408.svg",
+            not_auth: "/401.svg",
+            not_found: "/404.svg",
+            bad_request: "/408.svg",
         }
     },
     feature: {
@@ -49,6 +49,7 @@ export const page_content = {
                 label_type: "Manga",
                 value: "manga",
             }
-        ]
+        ],
+        genres_sensor: ["Hentai", "Erotica"]
     }
 }
