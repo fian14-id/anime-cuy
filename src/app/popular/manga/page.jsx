@@ -1,4 +1,4 @@
-import MangaPopularContent from "./AnimePopularContent";
+import MangaPopularContent from "./MangaPopularContent";
 
 const Page = () => {
   return (
