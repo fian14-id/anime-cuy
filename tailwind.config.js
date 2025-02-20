@@ -16,13 +16,13 @@ module.exports = {
     colors: {
       transparent: 'transparent',
       palette: {
-        primary: "#214C5F",
-        accent: "#79B3CB",
-        secondary: "#F8FAFC",
-        dark: "#242424",
+        primary: "#F4F8FF",
+        accent: "#FF5055",
+        secondary: "#242424",
+        dark: "#E1EACD",
         grey: {
           600: "#9AA6B2",
-          400: "#E1EACD",
+          400: "#4ae8b2",
         }
       }
     }

@@ -29,7 +29,7 @@ const Page = async ({ params }) => {
             <AnimeList api={getSearchAnime} setTitle={`Anime result for: ${getParams}`} linkHref={`/search/anime/${keyword}`} addtionalText="" />
             <AnimeList api={getSearchManga} setTitle={`Manga result for: ${getParams}`} linkHref={`/search/anime/${keyword}`} addtionalText="" />
             </>
-            ) : (<h1 className="font-semibold uppercase text-center">Fail to fetching data</h1>)}
+            ) : (<h1 className="font-semibold text-center uppercase">Fail to fetching data</h1>)}
     </section>
   )
 }

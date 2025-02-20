@@ -1,72 +1,104 @@
-"use client";
+'use client';
 
+import { useState, useEffect, useCallback } from "react";
 import AnimeList from "@/components/AnimeList";
 import SkeletonLoading from "@/components/AnimeList/SkeletonLoading";
 import Banner from "@/components/utilities/Banner";
 import Pagination from "@/components/utilities/Pagination";
 import { fetchPaginationNow } from "@/libs/fetch-api";
-import { useState, useEffect, useCallback } from "react";
 
-const Page = () => {
-    const [page, setPage] = useState(1);
-    const [randomPage, setRandomPage] = useState(1);
-    const [now, setNow] = useState({data: [], pagination: null});
-    const [isLoading, setIsLoading] = useState(true);
+const NowPageContent = () => {
+    const [state, setState] = useState({
+        page: 1,
+        randomIndex: 0,
+        animeData: { data: [], pagination: null },
+        isLoading: true,
+        error: null
+    });
 
-    const getRandomIntInclusive = useCallback((min, max) => {
-        const minCeiled = Math.ceil(min);
-        const maxFloored = Math.floor(max);
-        return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled); // The maximum is inclusive and the minimum is inclusive
-      }, []);
+    const getRandomIndex = useCallback((max) => {
+        return Math.floor(Math.random() * max);
+    }, []);
 
-    const fetchDatanow = useCallback(async () => {
+    const fetchData = useCallback(async () => {
         try {
-            setIsLoading(true);
-            const response = await fetchPaginationNow(page);
-            setNow(response);
-
-            if (response?.data?.length) {
-                const newRandomPage = getRandomIntInclusive(0, response.data.length - 1)
-                setRandomPage(newRandomPage)
+            setState(prev => ({ ...prev, isLoading: true, error: null }));
+            
+            const response = await fetchPaginationNow(state.page);
+            
+            if (!response?.data) {
+                throw new Error('No data received');
             }
+
+            setState(prev => ({
+                ...prev,
+                animeData: response,
+                randomIndex: getRandomIndex(response.data.length),
+                isLoading: false
+            }));
         } catch (error) {
-            console.error(error);
-        } finally {
-            setIsLoading(false);
+            console.error('Error fetching anime data:', error);
+            setState(prev => ({
+                ...prev,
+                error: 'Failed to load anime data. Please try again later.',
+                isLoading: false
+            }));
         }
-    }, [page, getRandomIntInclusive]);
+    }, [state.page, getRandomIndex]);
 
-      useEffect(() => {
-          fetchDatanow();
-    }, [fetchDatanow]);
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
 
-    const getSynopsis = (() => {
-        const synopsis = now?.data?.[randomPage]?.synopsis;
-        if (!synopsis) return "";
-        return synopsis.length > 100 ? `${synopsis.slice(0, 100)}...` : synopsis;
-    })();
-    const getImageRandom = now?.data?.[randomPage]?.images?.webp?.image_url
+    const handlePageChange = useCallback((newPage) => {
+        setState(prev => ({ ...prev, page: newPage }));
+    }, []);
+
+    // Memoize featured anime data
+    const featuredAnime = state.animeData.data[state.randomIndex];
+    const synopsis = featuredAnime?.synopsis?.slice(0, 100)?.concat('...') ?? '';
+    const imageUrl = featuredAnime?.images?.webp?.image_url;
+
+    if (state.error) {
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <p className="text-red-500">{state.error}</p>
+            </div>
+        );
+    }
+
     return (
-        <section>
-            {now?.data?.[randomPage] && <Banner title={now?.data?.[randomPage]?.title} subtitle={getSynopsis} variant="image" image={getImageRandom}  />}
-            {isLoading ? (
-                <SkeletonLoading />
-            ) : (
-                <AnimeList 
-                    api={now} 
-                    addtionalText="" 
-                    linkHref="" 
-                    setTitle={`Now Seasons #${page}`} 
-                />
-            )}
-             {now.pagination && (
-                                <Pagination
-                                    page={page}
-                                    setPage={setPage}
-                                    paginationData={now.pagination}
-                                />)}
-        </section>
+                <section className="space-y-8">
+                {featuredAnime && (
+                    <Banner
+                        title={featuredAnime.title}
+                        subtitle={synopsis}
+                        variant="image"
+                        image={imageUrl}
+                        className="text-palette-primary"
+                    />
+                )}
+
+                {state.isLoading ? (
+                    <SkeletonLoading />
+                ) : (
+                    <AnimeList 
+                        api={state.animeData}
+                        addtionalText=""
+                        linkHref=""
+                        setTitle={`Now Seasons #${state.page}`}
+                    />
+                )}
+
+                {state.animeData.pagination && (
+                    <Pagination
+                        page={state.page}
+                        setPage={handlePageChange}
+                        paginationData={state.animeData.pagination}
+                    />
+                )}
+            </section>
     );
 };
 
-export default Page;
+export default NowPageContent;

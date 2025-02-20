@@ -1,8 +1,9 @@
 export const page_content = {
     name_page: "NexAnime",
-    logo_app: "/favicon.ico",
+    logo_app: "/nexanime.svg",
     description: "This is an anime information website similar to MyAnimeList, but built with Next.js to provide a modern and fast user experience.",
     developed_by: "Fianity",
+    main_web: "https://fianity.com",
     social_media: [
         {
             name: "WhatsApp",
@@ -48,7 +49,12 @@ export const page_content = {
                 name_type: "mangaType",
                 label_type: "Manga",
                 value: "manga",
-            }
+            },
+            {
+                name_type: "charType",
+                label_type: "Characters",
+                value: "characters",
+            },
         ],
         genres_sensor: ["Hentai", "Erotica"]
     }

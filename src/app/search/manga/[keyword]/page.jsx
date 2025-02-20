@@ -21,8 +21,8 @@ const Page = async ({ params }) => {
     const getSearchManga = await fetchSearchManga(keyword)
 
   return (
-    <section className={`w-full ${getSearchManga?.data} ? (min-h-full) : (min-h-screen) py-6`}>
-        {getSearchManga?.data ? <AnimeList api={getSearchManga} setTitle={`Search result for: ${getParams}`} linkHref={`/search/anime/${keyword}`} addtionalText="" /> : <h1 className="font-semibold uppercase text-center">Fail to fetching data</h1>}
+    <section className="w-full h-screen ">
+        {getSearchManga?.data ? <AnimeList api={getSearchManga} setTitle={`Search result for: ${getParams}`} linkHref={`/search/manga/${keyword}`} /> : <h1 className="font-semibold uppercase">Fail to fetching data</h1>}
     </section>
   )
 }

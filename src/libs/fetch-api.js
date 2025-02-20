@@ -77,6 +77,11 @@ export const fetchSearchManga = (query) => {
   return fetchApi('manga', `q=${encodeURIComponent(query)}&sfw`);
 };  
 
+export const fetchSearchCharacter = (query) => {
+  if (!query) throw new Error("Search query is required");
+  return fetchApi('characters', `q=${encodeURIComponent(query)}`);
+};  
+
 export const fetchPaginationAnimePopular = (page) => {
   if (!page) throw new Error("Page is required");
   return fetchApi('top/anime', `page=${page}&sfw`);
@@ -110,4 +115,8 @@ export const fetchCharactersManga = (id) => {
 export const fetchCharactersAnime = (id) => {
   if (!id) throw new Error("ID is required");
   return fetchApi(`anime/${id}/characters`);
+};
+export const fetchCharactersFull = (id) => {
+  if (!id) throw new Error("ID is required");
+  return fetchApi(`characters/${id}/full`);
 };

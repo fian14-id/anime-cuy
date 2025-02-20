@@ -3,11 +3,11 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { MagnifyingGlass, SignIn } from "@phosphor-icons/react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useDataContext } from "./DataContext";
 import { page_content } from "@/libs/setting-app";
 import Modal from "./Modal";
+import TransitionsLink from "./TransitionsLink";
 
 const Navbar = () => {
   const searchRef = useRef();
@@ -81,26 +81,26 @@ const Navbar = () => {
       initial={{ opacity: 0, y: -100 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ ease: "easeInOut", duration: 0.5 }}
-      className="sticky top-0 z-30 flex items-center justify-between w-full px-4 py-2 backdrop-blur-sm backdrop-opacity-80 md:px-8 md:py-6"
+      className="sticky top-0 z-30 flex items-center justify-between w-full px-4 py-2 bg-palette-primary md:px-8 md:py-6"
     >
-      <Link href="/">
+      <TransitionsLink href="/">
         <span className="text-lg font-bold md:text-xl lg:text-2xl">
           {pageContent?.logo_app ? (
             <div className="flex items-center gap-2">
               <Image
-                className="py-2 "
+                className="w-12 h-12 py-2 sm:w-14 sm:h-14"
                 src={pageContent.logo_app}
                 width={65}
                 height={65}
                 alt={pageContent.name_page}
               />{" "}
-              <span className="font-semibold text-transparent bg-none bg-clip-text md:bg-palette-secondary">{pageContent.name_page}</span>
+            <span className="font-semibold text-transparent bg-none bg-clip-text md:bg-palette-accent">{pageContent.name_page}</span>
             </div>
           ) : (
-            pageContent.name_page
+            <span className="font-semibold text-transparent bg-none bg-clip-text md:bg-palette-accent">{pageContent.name_page}</span>
           )}
         </span>
-      </Link>
+      </TransitionsLink>
       <main>
         {/* Start Modal Search */}
         <Modal isOpen={searchOpen} onClose={closeSearch}>
@@ -126,7 +126,7 @@ const Navbar = () => {
               {searchContent.trim() ? (
                 <button
                   type="submit"
-                  className="p-2 border-b-2 border-b-palette-primary text-palette-primary"
+                  className="p-2 border-b-2 border-b-palette-accent text-palette-accent"
                 >
                   Go
                 </button>
@@ -145,7 +145,7 @@ const Navbar = () => {
                         value={type.value}
                         checked={selectedType === type.value}
                         onChange={handleChangeOption}
-                        className="absolute top-0 left-0 w-full h-full duration-75 ease-in border-l-0 rounded-sm outline-none appearance-none transtiion-all checked:border-l-4 border-palette-primary "
+                        className="absolute top-0 left-0 w-full h-full duration-75 ease-in border-l-0 rounded-sm outline-none appearance-none transtiion-all checked:border-l-4 border-palette-accent "
                       />
                       <label htmlFor={type.name_type} className="ml-4">
                         <h3 className="font-medium">{type.label_type}</h3>
@@ -190,11 +190,11 @@ const Navbar = () => {
               <abbr title="Control">Ctrl </abbr>K
             </kbd>
           </li>
-          <Link href="/login">
+          <TransitionsLink href="/login">
             <li className="px-4 py-2 font-semibold underline md:px-6 md:py-2 dark:text-palette-secondary animate-pulse">
               <h2>Login</h2>
             </li>
-          </Link>
+          </TransitionsLink>
         </ul>
         {/* for mobile menu */}
         {isMenuOpen && (
@@ -216,11 +216,11 @@ const Navbar = () => {
                 transition={{ ease: "backInOut", duration: 0.5 }}
               >
                 <button type="button">
-                  <MagnifyingGlass size={24} weight="bold" />
+                  <MagnifyingGlass size={24} weight="bold" className="w-8 h-8 p-2 rounded-full shadow-xl text-palette-accent bg-palette-secondary bottom-10 right-5 hover:brightness-75" />
                 </button>
               </motion.h2>
             </div>
-            <Link
+            <TransitionsLink
               className="transition-all ease-in-out hover:scale-125"
               onClick={toggleMenu}
               href="/login"
@@ -232,9 +232,9 @@ const Navbar = () => {
                 transition={{ ease: "backInOut", duration: 0.5, delay: 0.5 }}
                 className="underline"
               >
-                <SignIn size={24} weight="bold" />
+                <SignIn size={24} weight="bold" className="w-8 h-8 p-2 rounded-full shadow-xl text-palette-accent bg-palette-secondary bottom-10 right-5 hover:brightness-75" />
               </motion.h2>
-            </Link>
+            </TransitionsLink>
           </motion.div>
         )}
       </main>

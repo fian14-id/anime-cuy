@@ -2,13 +2,12 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
-const { fetchCharactersAnime } = require("@/libs/fetch-api");
+import TransitionsLink from '@/components/utilities/TransitionsLink';
+const { fetchCharactersManga } = require("@/libs/fetch-api");
 
-const DetailContent = ({ animeData }) => {
+const DetailContentManga = ({ animeData }) => {
   const [activeTab, setActiveTab] = useState('details');
   const [characters, setCharacters] = useState([]);
-  const [imageChar, setImageChar] = useState('char');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -17,7 +16,7 @@ const DetailContent = ({ animeData }) => {
       const fetchCharacters = async () => {
         setIsLoading(true);
         try {
-          const response = await fetchCharactersAnime(animeData.mal_id);
+          const response = await fetchCharactersManga(animeData.mal_id);
           setCharacters(response.data);
         } catch (err) {
           setError(err.message);
@@ -30,30 +29,23 @@ const DetailContent = ({ animeData }) => {
     }
   }, [activeTab, animeData.mal_id, characters.length]);
 
-  const renderCharacterCard = ({ character, role, voice_actors }) => (
-    <div key={character.mal_id} className="flex flex-col bg-white/5 rounded-lg p-4 hover:bg-white/10 transition-all">
+  const renderCharacterCard = ({ character, role }) => (
+    <div key={character.mal_id} className="flex flex-col p-4 transition-all rounded-lg bg-white/5 hover:bg-white/10">
       <div className="flex gap-4">
-        <div className="w-20 h-20 relative flex-shrink-0">
+        <div className="relative flex-shrink-0 w-20 h-20">
           <Image
-            src={imageChar === 'char' && voice_actors[0] ? character.images.jpg.image_url : voice_actors[0]?.person?.images?.jpg?.image_url}
+            src={character.images.jpg.image_url}
             alt={character.name}
             fill
-            className="rounded-md object-cover"
+            className="object-cover rounded-md"
             loading='lazy'
           />
         </div>
         <div className="flex flex-col justify-center">
-          <Link href={`/character/${character.mal_id}`}>
-            <h3 className="font-medium text-lg hover:text-palette-accent transition-colors duration-100">{character.name}</h3>
-          </Link>
+          <TransitionsLink href={`/character/${character.mal_id}`}>
+            <h3 className="text-lg font-medium transition-colors duration-100 hover:text-palette-accent">{character.name}</h3>
+          </TransitionsLink>
           <p className="text-sm text-palette-secondary/80">{role}</p>
-          {voice_actors[0] && (
-            <Link href={`/person/${voice_actors[0]?.person?.mal_id}`} onMouseOver={() => setImageChar('person')} onMouseOut={() => setImageChar('char')}>
-                <p className="text-sm hover:text-palette-accent transition-colors duration-100 text-palette-secondary/60 mt-1">
-                VA: {voice_actors[0].person.name} ({voice_actors[0].language})
-                </p>
-            </Link>
-          )}
         </div>
       </div>
     </div>
@@ -85,16 +77,8 @@ const DetailContent = ({ animeData }) => {
             <td>: {animeData.score}</td>
           </tr>
           <tr>
-            <td>Episodes&nbsp;</td>
-            <td>: {animeData.episodes}</td>
-          </tr>
-          <tr>
             <td>Status&nbsp;</td>
             <td>: {animeData.status}</td>
-          </tr>
-          <tr>
-            <td>Rating&nbsp;</td>
-            <td>: {animeData.rating}</td>
           </tr>
           </tbody>
         </table>
@@ -126,7 +110,7 @@ const DetailContent = ({ animeData }) => {
 
   return (
     <>
-      <nav className="w-full flex justify-center pb-4">
+      <nav className="flex justify-center w-full pb-4">
         <div className="w-full">
           <div className="sr-only">
             <input
@@ -177,4 +161,4 @@ const DetailContent = ({ animeData }) => {
   );
 };
 
-export default DetailContent;
+export default DetailContentManga;

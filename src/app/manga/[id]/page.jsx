@@ -1,9 +1,22 @@
 // page.js
 import Image from "next/image";
-import DetailContentManga from "./client/page";
+import DetailContentManga from "./DetailManga";
 const { fetchDetailsManga } = require("@/libs/fetch-api");
 
-
+export async function generateMetadata({ params }) {
+  const { keyword } = params;
+  const capitalizeWords = (str) => {
+    return str.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  }
+  const getParams = keyword?.trim().replace(/-/g, ' ')
+    return {
+      title: `${capitalizeWords(getParams)}`,
+      openGraph: {
+        title: `${capitalizeWords(getParams)}`,
+        description: `Searching for your favorite anime and manga from the keyword ${capitalizeWords(getParams)}`,
+    }
+  }
+  }
 
 const Page = async ({ params }) => {
   const { id } = params;
@@ -20,17 +33,18 @@ const Page = async ({ params }) => {
     }
 
     return (
+
       <section className="flex flex-col justify-center w-full gap-4 px-6 py-4 md:flex-row">
-        <main className="w-full px-0 md:px-6 py-4 md:w-1/3 grid place-content-center">
+        <main className="grid w-full px-0 py-4 md:px-6 md:w-1/3 place-content-center">
           <Image
             src={result.data.images.jpg.large_image_url}
             alt={result.data.title}
             width={900}
             height={1600}
-            className="w-72 sm:w-80 md:w-96 rounded-md object-cover md:aspect-[4/6]"
+            className="w-72 sm:w-80 md:w-96 shadow-lg rounded-md object-cover md:aspect-[4/6]"
           />
         </main>
-        <main className="flex flex-col gap-2 w-full px-6 py-4">
+        <main className="flex flex-col w-full gap-2 px-6 py-4">
           <DetailContentManga animeData={result.data} />
         </main>
       </section>

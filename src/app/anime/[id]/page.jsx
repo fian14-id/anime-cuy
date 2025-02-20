@@ -1,16 +1,36 @@
 // page.js
+
 import Image from "next/image";
-import DetailContent from "./client/DetailContent";
+import DetailContentAnime from "./DetailContent";
 const { fetchDetailsAnime } = require("@/libs/fetch-api");
 
-
+const getAnimeDetails = async (id) => {
+  try {
+      const result = await fetchDetailsAnime(id);
+      return result?.data || null;
+  } catch (error) {
+      console.error("Failed to fetch anime details:", error);
+      return null;
+  }
+};
+export async function generateMetadata({params}) {
+  const animeDetails = await getAnimeDetails(params.id)
+  const title = animeDetails?.title || "Detail"
+    return {
+      title,
+      openGraph: {
+        title,
+        description: `Searching for your favorite anime and manga from the keyword ${title}`,
+    }
+  }
+  }
 
 const Page = async ({ params }) => {
   const { id } = params;
   try {
-    const result = await fetchDetailsAnime(id);
+    const result = await getAnimeDetails(id);
     // Handle kasus data null (404)
-    if (!result.data) {
+    if (!result) {
       return (
         <div className="grid w-full h-screen py-8 text-center place-content-center">
           <h2 className="mb-2 text-xl font-bold">Anime Tidak Ditemukan</h2>
@@ -20,18 +40,19 @@ const Page = async ({ params }) => {
     }
 
     return (
+
       <section className="flex flex-col justify-center w-full gap-4 px-6 py-4 md:flex-row">
-        <main className="w-full px-0 md:px-6 py-4 md:w-1/3 grid place-content-center">
+        <main className="grid w-full px-0 py-4 md:px-6 md:w-1/3 place-content-center">
           <Image
-            src={result.data.images.jpg.large_image_url}
-            alt={result.data.title}
+            src={result.images.jpg.large_image_url}
+            alt={result.title}
             width={900}
             height={1600}
-            className="w-72 sm:w-80 md:w-96 rounded-md object-cover md:aspect-[4/6]"
+            className="w-72 flex-shrink-0 shadow-xl sm:w-80 md:w-96 rounded-md object-cover md:aspect-[4/6]"
           />
         </main>
-        <main className="flex flex-col gap-2 w-full px-6 py-4">
-          <DetailContent animeData={result.data} />
+        <main className="flex flex-col w-full gap-2 px-6 py-4">
+          <DetailContentAnime animeData={result} />
         </main>
       </section>
     );

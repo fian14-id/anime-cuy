@@ -1,9 +1,8 @@
-const Loading = () => {
-  return (
-    <main className="grid place-items-center min-h-screen">
-        <div className="loader"></div>
-    </main>
-  )
-}
+import { LoadingPage } from "@/components/utilities/LoadingAnimation";
+import animationData from '@/assets/animations/nexanime.json';
 
-export default Loading
+// const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
+
+export default function Loading() {
+  return <LoadingPage animationData={animationData} />;
+}

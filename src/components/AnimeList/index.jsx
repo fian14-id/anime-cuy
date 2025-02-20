@@ -1,17 +1,17 @@
 "use client";
 
 import PropTypes from "prop-types";
-import Link from "next/link";
 import HeaderList from "./Header";
 import Image from "next/image";
 import { useEffect, useState, useCallback } from "react";
 import SkeletonLoading from "./SkeletonLoading";
+import TransitionsLink from "../utilities/TransitionsLink";
 
 const STORAGE_KEY = "savedDataApi";
 
 const AnimeCard = ({ result }) => (
-  <Link href={`/${result?.genres?.[0]?.type}/${result.mal_id}`}>
-    <article className="relative overflow-hidden rounded-lg group">
+  <TransitionsLink href={`/${result?.genres?.[0]?.type}/${result.mal_id}`}>
+    <article className="relative overflow-hidden rounded-lg shadow-xl group">
       <Image
         src={result.images.jpg.large_image_url}
         alt={result.title}
@@ -20,12 +20,12 @@ const AnimeCard = ({ result }) => (
         className="w-full aspect-[9/16] transition-transform duration-300 group-hover:scale-105"
         loading="lazy"
       />
-      <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-palette-primary to-transparent">
-        <h3 className="font-semibold text-palette-secondary">
+      <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-palette-accent to-transparent">
+        <h3 className="font-semibold text-palette-primary">
           {result.title.length > 25 ? `${result.title.slice(0, 25)}...` : result.title}
         </h3>
         {result.genres && (
-          <p className="text-xs md:text-sm text-palette-secondary/80">
+          <p className="text-xs md:text-sm text-palette-primary/80">
             {result.genres.map((genre, i) => (
               <span key={genre.mal_id}>
                 {genre.name}{i < result.genres.length - 1 && ", "}
@@ -35,7 +35,7 @@ const AnimeCard = ({ result }) => (
         )}
       </div>
     </article>
-  </Link>
+  </TransitionsLink>
 );
 
 const AnimeList = ({ api, setTitle, linkHref, addtionalText }) => {
@@ -95,8 +95,8 @@ const AnimeList = ({ api, setTitle, linkHref, addtionalText }) => {
       />
       <div className="grid grid-cols-2 gap-4 p-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
         {animeData?.data?.length > 0 ? (
-          animeData.data.map((result) => (
-            <AnimeCard key={result.mal_id} result={result} />
+          animeData.data.map((result, index) => (
+            <AnimeCard key={`${result.mal_id}-${index}`} result={result} />
           ))
         ) : (
           <div className="py-8 text-center col-span-full">

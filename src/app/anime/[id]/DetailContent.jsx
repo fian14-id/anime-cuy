@@ -2,12 +2,13 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
-const { fetchCharactersManga } = require("@/libs/fetch-api");
+import TransitionsLink from '@/components/utilities/TransitionsLink';
+const { fetchCharactersAnime } = require("@/libs/fetch-api");
 
-const DetailContentManga = ({ animeData }) => {
+const DetailContentAnime = ({ animeData }) => {
   const [activeTab, setActiveTab] = useState('details');
   const [characters, setCharacters] = useState([]);
+  const [imageChar, setImageChar] = useState('char');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -16,7 +17,7 @@ const DetailContentManga = ({ animeData }) => {
       const fetchCharacters = async () => {
         setIsLoading(true);
         try {
-          const response = await fetchCharactersManga(animeData.mal_id);
+          const response = await fetchCharactersAnime(animeData.mal_id);
           setCharacters(response.data);
         } catch (err) {
           setError(err.message);
@@ -29,23 +30,30 @@ const DetailContentManga = ({ animeData }) => {
     }
   }, [activeTab, animeData.mal_id, characters.length]);
 
-  const renderCharacterCard = ({ character, role }) => (
-    <div key={character.mal_id} className="flex flex-col bg-white/5 rounded-lg p-4 hover:bg-white/10 transition-all">
+  const renderCharacterCard = ({ character, role, voice_actors }) => (
+    <div key={character.mal_id} className="flex flex-col p-4 transition-all rounded-lg bg-white/5 hover:bg-white/10">
       <div className="flex gap-4">
-        <div className="w-20 h-20 relative flex-shrink-0">
+        <div className="relative flex-shrink-0 w-20 h-20">
           <Image
-            src={character.images.jpg.image_url}
+            src={imageChar === 'char' && voice_actors[0] ? character.images.jpg.image_url : voice_actors[0]?.person?.images?.jpg?.image_url}
             alt={character.name}
             fill
-            className="rounded-md object-cover"
+            className="object-cover rounded-md"
             loading='lazy'
           />
         </div>
         <div className="flex flex-col justify-center">
-          <Link href={`/character/${character.mal_id}`}>
-            <h3 className="font-medium text-lg hover:text-palette-accent transition-colors duration-100">{character.name}</h3>
-          </Link>
+          <TransitionsLink href={`/character/${character.mal_id}`}>
+            <h3 className="text-lg font-medium transition-colors duration-100 hover:text-palette-accent">{character.name}</h3>
+          </TransitionsLink>
           <p className="text-sm text-palette-secondary/80">{role}</p>
+          {voice_actors[0] && (
+            <TransitionsLink href={`/person/${voice_actors[0]?.person?.mal_id}`} onMouseOver={() => setImageChar('person')} onMouseOut={() => setImageChar('char')}>
+                <p className="mt-1 text-sm transition-colors duration-100 hover:text-palette-accent text-palette-secondary/60">
+                VA: {voice_actors[0].person.name} ({voice_actors[0].language})
+                </p>
+            </TransitionsLink>
+          )}
         </div>
       </div>
     </div>
@@ -64,7 +72,7 @@ const DetailContentManga = ({ animeData }) => {
           ))}
         </h2>
       )}
-      <div className="mt-4">
+      <main className="mt-4">
         <p className="text-sm leading-relaxed">{animeData.synopsis}</p>
         <table className="mt-4 space-y-2" aria-hidden="true">
           <tbody>
@@ -76,13 +84,22 @@ const DetailContentManga = ({ animeData }) => {
             <td>Score&nbsp;</td>
             <td>: {animeData.score}</td>
           </tr>
+          {animeData.episodes && <tr>
+            <td>Episodes&nbsp;</td>
+            <td>: {animeData.episodes}</td>
+          </tr>}
           <tr>
             <td>Status&nbsp;</td>
             <td>: {animeData.status}</td>
           </tr>
+          <tr>
+            <td>Rating&nbsp;</td>
+            <td>: {animeData.rating}</td>
+          </tr>
           </tbody>
         </table>
-      </div>
+        <button className="px-6 py-2 mt-4 transition-all duration-300 ease-in-out shadow-md rounded-xl hover:rounded-none bg-palette-accent w-fit text-palette-primary">Trailer</button>
+      </main>
     </article>
   );
 
@@ -110,7 +127,7 @@ const DetailContentManga = ({ animeData }) => {
 
   return (
     <>
-      <nav className="w-full flex justify-center pb-4">
+      <nav className="flex justify-center w-full pb-4">
         <div className="w-full">
           <div className="sr-only">
             <input
@@ -161,4 +178,4 @@ const DetailContentManga = ({ animeData }) => {
   );
 };
 
-export default DetailContentManga;
+export default DetailContentAnime;

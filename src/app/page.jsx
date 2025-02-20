@@ -4,6 +4,7 @@ import AnimeList from "@/components/AnimeList";
 import { fetchApi } from "@/libs/fetch-api";
 import { page_content } from "@/libs/setting-app";
 import SkeletonLoading from "@/components/AnimeList/SkeletonLoading";
+import LoadingAnimation from "@/components/utilities/LoadingAnimation";
 
 export const revalidate = 3600;
 export const dynamicParams = false;
@@ -47,6 +48,7 @@ const Page = async () => {
   const heroBackgroundImage = animePopular?.data?.[0]?.images?.webp?.image_url;
 
   return (
+
     <section className="w-full h-full">
       <HeroSection backgroundImage={heroBackgroundImage} />
       

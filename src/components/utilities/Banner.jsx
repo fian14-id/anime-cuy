@@ -1,5 +1,3 @@
-import React from 'react';
-
 const Banner = ({ 
   title, 
   subtitle,
@@ -9,14 +7,14 @@ const Banner = ({
   variant = "default" // default, minimal, gradient, image
 }) => {
   const variants = {
-    default: "bg-indigo-600",
+    default: "bg-palette-primary",
     minimal: "bg-gray-50 border-b",
     gradient: "bg-gradient-to-r from-indigo-600 to-purple-600",
     image: "bg-gray-900 relative overflow-hidden"
   };
 
   const textColors = {
-    default: "text-white",
+    default: "text-palette-primary",
     minimal: "text-gray-900",
     gradient: "text-white",
     image: "text-white relative z-10"
@@ -24,19 +22,20 @@ const Banner = ({
 
   return (
     <div className={`w-full ${variants[variant]} ${className}`}>
-      {variant === "image" && image && (
-        <div className="absolute inset-0 w-full h-full shadow-md rounded-md">
-          <div className="absolute inset-0 bg-black/50 z-[1]" /> {/* Overlay */}
+      {variant === "image" && image ? (
+        <div className="absolute inset-0 w-full h-full rounded-md shadow-md">
+          <div className="absolute inset-0 z-[1]" /> {/* Overlay */}
           <img 
             src={image} 
             alt={title}
-            className="w-full h-full object-cover brightness-50 px-4 md:px-6 blur-sm"
+            className="object-cover w-full h-full px-4 brightness-50 md:px-6 blur-sm"
           />
         </div>
-      )}
+      ) : (<div className="absolute inset-0 w-full h-full rounded-md shadow-md bg-palette-primary/80">
+    </div>)}
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="py-8 px-4 md:px-6 sm:py-12">
+      <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div className="px-4 py-8 md:px-6 sm:py-12">
           {/* Title Section */}
           <div className="text-center">
             {title && (
