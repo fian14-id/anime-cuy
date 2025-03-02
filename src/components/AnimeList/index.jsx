@@ -5,22 +5,23 @@ import HeaderList from "./Header";
 import Image from "next/image";
 import { useEffect, useState, useCallback } from "react";
 import SkeletonLoading from "./SkeletonLoading";
-import TransitionsLink from "../utilities/TransitionsLink";
+import Link from "next/link";
+import { motion } from "framer-motion";
 
 const STORAGE_KEY = "savedDataApi";
 
 const AnimeCard = ({ result }) => (
-  <TransitionsLink href={`/${result?.genres?.[0]?.type}/${result.mal_id}`}>
-    <article className="relative overflow-hidden rounded-lg shadow-xl group">
+  <Link href={`/${result?.genres?.[0]?.type}/${result.mal_id}`}>
+    <motion.article initial={{y: -50, opacity: 0}} whileInView={{y: 0, opacity: 1}} viewport={{once:true}} transition={{ease: "easeIn", duration: 0.5}} className="relative overflow-hidden rounded-md shadow-lg group">
       <Image
         src={result.images.jpg.large_image_url}
         alt={result.title}
         width={900}
         height={1600}
-        className="w-full aspect-[9/16] transition-transform duration-300 group-hover:scale-105"
+        className="w-full aspect-[9/16] transition-transform hd-image duration-300 group-hover:scale-105"
         loading="lazy"
       />
-      <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-palette-accent to-transparent">
+      <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-palette-secondary to-transparent">
         <h3 className="font-semibold text-palette-primary">
           {result.title.length > 25 ? `${result.title.slice(0, 25)}...` : result.title}
         </h3>
@@ -34,8 +35,8 @@ const AnimeCard = ({ result }) => (
           </p>
         )}
       </div>
-    </article>
-  </TransitionsLink>
+    </motion.article>
+  </Link>
 );
 
 const AnimeList = ({ api, setTitle, linkHref, addtionalText }) => {

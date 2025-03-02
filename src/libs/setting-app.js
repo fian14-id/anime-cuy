@@ -3,6 +3,7 @@ export const page_content = {
     logo_app: "/nexanime.svg",
     description: "This is an anime information website similar to MyAnimeList, but built with Next.js to provide a modern and fast user experience.",
     developed_by: "Fianity",
+    url_web: "https://nexanime.fianity.com",
     main_web: "https://fianity.com",
     social_media: [
         {

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import DetailContentAnime from "./DetailContent";
+import { page_content } from "@/libs/setting-app";
 const { fetchDetailsAnime } = require("@/libs/fetch-api");
 
 const getAnimeDetails = async (id) => {
@@ -13,17 +14,37 @@ const getAnimeDetails = async (id) => {
       return null;
   }
 };
-export async function generateMetadata({params}) {
-  const animeDetails = await getAnimeDetails(params.id)
-  const title = animeDetails?.title || "Detail"
-    return {
+export async function generateMetadata({ params }) {
+  const details = await getAnimeDetails(params.id);
+  const title = details?.title || "Default Title";
+  const description = details?.synopsis || "No description available."
+  const imageUrl = details?.images?.jpg?.image_url || "/nexanime-img.png"
+  return {
+    title,
+    description,
+    openGraph: {
       title,
-      openGraph: {
-        title,
-        description: `Searching for your favorite anime and manga from the keyword ${title}`,
-    }
-  }
-  }
+      description,
+      url: `${page_content?.url_web}/anime/${params.id}`, // Sesuaikan dengan URL
+      siteName: page_content?.name_page,
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+      type: "profile",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [imageUrl],
+    },
+  };
+}
 
 const Page = async ({ params }) => {
   const { id } = params;
@@ -48,7 +69,7 @@ const Page = async ({ params }) => {
             alt={result.title}
             width={900}
             height={1600}
-            className="w-72 flex-shrink-0 shadow-xl sm:w-80 md:w-96 rounded-md object-cover md:aspect-[4/6]"
+            className="w-72 flex-shrink-0 hd-image shadow-xl sm:w-80 md:w-96 rounded-md object-cover md:aspect-[4/6]"
           />
         </main>
         <main className="flex flex-col w-full gap-2 px-6 py-4">

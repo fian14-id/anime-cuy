@@ -19,16 +19,18 @@ export async function generateMetadata({ params }) {
 const Page = async ({ params }) => {
     const { keyword } = params
     const getParams = keyword.trim().replace(/-/g, ' ')
-    const getSearchAnime = await fetchSearchAnime(keyword)
-    const getSearchManga = await fetchSearchManga(keyword)
+    const [getSearchAnime, getSearchManga] = await Promise.all([fetchSearchAnime(keyword), fetchSearchManga(keyword)]);
 
   return (
     <section className={`w-full ${getSearchManga?.data} ? (min-h-full) : (min-h-screen) py-6`}>
         {getSearchManga?.data ? (
-            <>
-            <AnimeList api={getSearchAnime} setTitle={`Anime result for: ${getParams}`} linkHref={`/search/anime/${keyword}`} addtionalText="" />
-            <AnimeList api={getSearchManga} setTitle={`Manga result for: ${getParams}`} linkHref={`/search/anime/${keyword}`} addtionalText="" />
-            </>
+            <main>
+            <header className="flex flex-col items-center justify-center px-2 text-center md:px-6">
+              <h1 className="text-xl font-medium capitalize md:text-4xl">{getParams}</h1>
+            </header>
+            <AnimeList api={getSearchAnime} setTitle={`Anime result`} linkHref={`/search/anime/${keyword}`} addtionalText="See More..." />
+            <AnimeList api={getSearchManga} setTitle={`Manga result`} linkHref={`/search/anime/${keyword}`} addtionalText="" />
+            </main>
             ) : (<h1 className="font-semibold text-center uppercase">Fail to fetching data</h1>)}
     </section>
   )

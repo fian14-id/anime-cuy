@@ -1,4 +1,4 @@
-import TransitionsLink from "../utilities/TransitionsLink";
+import Link from "next/link";
 
 const HeaderList = ( {getTitle, getLink, getAddText} ) => {
     return (
@@ -6,12 +6,12 @@ const HeaderList = ( {getTitle, getLink, getAddText} ) => {
         <h1 className="font-bold capitalize border-b-2 border-solid border-b-palette-accent text-palette-secondary text-md sm:text-xl md:text-2xl">
           {getTitle}
         </h1>
-        <TransitionsLink
+        <Link
           href={getLink}
           className="text-xs font-light underline text-palette-secondary hover:text-palette-accent md:text-sm"
         >
           {getAddText}
-        </TransitionsLink>
+        </Link>
       </div>
     )
 }

@@ -51,7 +51,7 @@ export default function RootLayout({ children }) {
         <link rel="preload" as="image" imageSrcSet="/public/nexanime.svg" />
       </head>
       <body className={`${montserrat.className} text-palette-secondary bg-palette-primary`}>
-        <Preloader isLoading={isInitialLoading} animationData={animationData} />
+      <Preloader isLoading={isInitialLoading} animationData={animationData} />
         <DataProvider>
           <Navbar />
         </DataProvider>

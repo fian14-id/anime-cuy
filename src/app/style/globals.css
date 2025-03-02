@@ -21,22 +21,19 @@
 
 @layer utilities {
   ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: 5px;
   }
 
   ::-webkit-scrollbar-track {
-    border-radius: 100vh;
     background: transparent;
-  }
+}
 
   ::-webkit-scrollbar-thumb {
-    /* background: var(--color-accent); */
-    background: none;
+    background: var(--color-accent);
 }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #F8FAFC;
+    background: none;
   }
 
 }
@@ -54,6 +51,7 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb)); */
+    scroll-behavior: smooth;
     position: relative;
     overflow-x: hidden;
     transition-property: transform, background, opacity;
@@ -66,6 +64,11 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.hd-image {
+  filter: contrast(105%) saturate(130%) brightness(105%) ;
+  -webkit-filter: contrast(105%) saturate(130%) brightness(105%) ;
 }
 
 .mouse {

@@ -1,9 +1,14 @@
 "use client"; // Jika menggunakan App Router
 
 import { useState, useEffect } from "react";
-import { ArrowUp } from "@phosphor-icons/react";
+import { usePathname } from "next/navigation";
+import { ArrowUp, ArrowUUpLeft } from "@phosphor-icons/react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const ToTop = () => {
+  const pathname = usePathname();
+  const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
 
   // Fungsi untuk memantau posisi scroll
@@ -22,6 +27,10 @@ const ToTop = () => {
       behavior: "smooth",
     });
   };
+
+  const backToPrev = () => {
+    router.back()
+  }
 
   useEffect(() => {
     window.addEventListener("scroll", toggleVisibility);
@@ -42,6 +51,7 @@ const ToTop = () => {
           </div>
         </button>
       )}
+      {(!isVisible && pathname !== "/") && <button onClick={backToPrev} className="fixed z-50 p-3 transition-all duration-300 rounded-full shadow-xl text-palette-accent bg-palette-secondary bottom-10 right-5 hover:brightness-75"><ArrowUUpLeft weight="bold" /></button>}
     </div>
   );
 };

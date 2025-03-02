@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { MagnifyingGlass, SignIn } from "@phosphor-icons/react";
@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useDataContext } from "./DataContext";
 import { page_content } from "@/libs/setting-app";
 import Modal from "./Modal";
-import TransitionsLink from "./TransitionsLink";
+import Link from "next/link";
 
 const Navbar = () => {
   const searchRef = useRef();
@@ -77,13 +77,14 @@ const Navbar = () => {
   }, []);
 
   return (
-    <motion.nav
+      <motion.nav
       initial={{ opacity: 0, y: -100 }}
       animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -100 }}
       transition={{ ease: "easeInOut", duration: 0.5 }}
       className="sticky top-0 z-30 flex items-center justify-between w-full px-4 py-2 bg-palette-primary md:px-8 md:py-6"
     >
-      <TransitionsLink href="/">
+      <Link href="/" className="cursor-pointer">
         <span className="text-lg font-bold md:text-xl lg:text-2xl">
           {pageContent?.logo_app ? (
             <div className="flex items-center gap-2">
@@ -100,7 +101,7 @@ const Navbar = () => {
             <span className="font-semibold text-transparent bg-none bg-clip-text md:bg-palette-accent">{pageContent.name_page}</span>
           )}
         </span>
-      </TransitionsLink>
+      </Link>
       <main>
         {/* Start Modal Search */}
         <Modal isOpen={searchOpen} onClose={closeSearch}>
@@ -190,11 +191,11 @@ const Navbar = () => {
               <abbr title="Control">Ctrl </abbr>K
             </kbd>
           </li>
-          <TransitionsLink href="/login">
+          <Link href="/login">
             <li className="px-4 py-2 font-semibold underline md:px-6 md:py-2 dark:text-palette-secondary animate-pulse">
               <h2>Login</h2>
             </li>
-          </TransitionsLink>
+          </Link>
         </ul>
         {/* for mobile menu */}
         {isMenuOpen && (
@@ -220,7 +221,7 @@ const Navbar = () => {
                 </button>
               </motion.h2>
             </div>
-            <TransitionsLink
+            <Link
               className="transition-all ease-in-out hover:scale-125"
               onClick={toggleMenu}
               href="/login"
@@ -234,7 +235,7 @@ const Navbar = () => {
               >
                 <SignIn size={24} weight="bold" className="w-8 h-8 p-2 rounded-full shadow-xl text-palette-accent bg-palette-secondary bottom-10 right-5 hover:brightness-75" />
               </motion.h2>
-            </TransitionsLink>
+            </Link>
           </motion.div>
         )}
       </main>

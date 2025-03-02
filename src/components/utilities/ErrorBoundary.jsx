@@ -1,6 +1,7 @@
 "use client";
 
 import { Component } from 'react';
+import Button from '../user-interface/Button';
 
 class ErrorBoundary extends Component {
   constructor(props) {
@@ -40,12 +41,11 @@ class ErrorBoundary extends Component {
             <h2 className="mb-2 text-xl font-bold">Too Many Requests</h2>
             <p className="mb-4">We're experiencing high traffic. Please wait a moment.</p>
             {this.state.retryCount < 3 && (
-              <button 
+              <Button 
                 onClick={this.retry}
-                className="px-4 py-2 text-palette-secondary bg-blue-500 rounded hover:bg-blue-600"
               >
                 Try Again
-              </button>
+              </Button>
             )}
           </div>
         );
@@ -58,7 +58,7 @@ class ErrorBoundary extends Component {
           <p className="mb-4">Please try again later</p>
           <button 
             onClick={this.retry}
-            className="px-4 py-2 text-palette-secondary bg-blue-500 rounded hover:bg-blue-600"
+            className="px-4 py-2 bg-blue-500 rounded text-palette-secondary hover:bg-blue-600"
           >
             Retry
           </button>

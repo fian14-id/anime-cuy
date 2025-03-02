@@ -35,7 +35,7 @@ const Pagination = ({ page, setPage, paginationData }) => {
   return (
     <div className="flex flex-wrap items-center justify-center gap-2 px-2 py-4 sm:gap-4">
       {/* Info Section */}
-      <div className="w-full mb-2 text-sm text-center text-palette-secondary/80">
+      <div className="w-full mb-2 text-sm text-center text-palette-primary/80">
         Showing {paginationData.items.count} of {paginationData.items.total} items
       </div>
       
@@ -47,8 +47,8 @@ const Pagination = ({ page, setPage, paginationData }) => {
           disabled={page === 1}
           className={`px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base rounded-md transition-colors ${
             page === 1
-              ? 'bg-palette-accent/20 text-palette-secondary/20 cursor-not-allowed'
-              : 'bg-palette-accent text-palette-secondary hover:bg-palette-accent/80'
+              ? 'bg-palette-accent/20 text-palette-primary/20 cursor-not-allowed'
+              : 'bg-palette-accent text-palette-primary hover:bg-palette-accent/80'
           }`}
         >
           Prev
@@ -60,7 +60,7 @@ const Pagination = ({ page, setPage, paginationData }) => {
             <button
               onClick={() => handlePageChange(1)}
               className={`px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base rounded-md transition-colors ${
-                page === 1 ? 'border-y-palette-accent border-y-2 text-palette-secondary' : 'bg-transparent opacity-100 hover:opacity-80'
+                page === 1 ? 'border-y-palette-accent border-y-2 text-palette-primary' : 'bg-transparent opacity-100 hover:opacity-80'
               }`}
             >
               1
@@ -95,7 +95,7 @@ const Pagination = ({ page, setPage, paginationData }) => {
             <button
               onClick={() => handlePageChange(totalPages)}
               className={`px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base rounded-md transition-colors ${
-                page === totalPages ? 'border-y-palette-accent border-y-2 text-palette-secondary' : 'bg-transparent opacity-100 hover:opacity-80'
+                page === totalPages ? 'border-y-palette-accent border-y-2 text-palette-primary' : 'bg-transparent opacity-100 hover:opacity-80'
               }`}
             >
               {totalPages}
@@ -109,8 +109,8 @@ const Pagination = ({ page, setPage, paginationData }) => {
           disabled={!paginationData.has_next_page}
           className={`px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base rounded-md transition-colors ${
             !paginationData.has_next_page
-              ? 'bg-palette-accent/20 text-palette-secondary/20 cursor-not-allowed'
-              : 'bg-palette-accent text-palette-secondary hover:bg-palette-accent/80'
+              ? 'bg-palette-accent/20 text-palette-primary/20 cursor-not-allowed'
+              : 'bg-palette-accent text-palette-primary hover:bg-palette-accent/80'
           }`}
         >
           Next

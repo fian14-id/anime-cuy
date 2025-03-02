@@ -3,7 +3,7 @@
 import { ArrowLeft } from "@phosphor-icons/react";
 import * as motion from 'framer-motion/client';
 import { page_content } from "@/libs/setting-app";
-import TransitionsLink from "@/components/utilities/TransitionsLink";
+import Link from "next/link";
 
 export default function NotFound() {
   return (
@@ -33,13 +33,13 @@ export default function NotFound() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <TransitionsLink 
+          <Link 
             href="/" 
             className="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium transition-all duration-300 border-l-4 text-palette-secondary border-l-palette-accent"
           >
             <ArrowLeft size={16} weight="bold" />
             Back to Home
-          </TransitionsLink>
+          </Link>
         </motion.div>
       </div>
 

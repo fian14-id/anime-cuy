@@ -11,7 +11,7 @@ const LoadingAnimation = forwardRef(({ size = "normal", animationData }, ref) =>
   const sizeClasses = {
     small: "w-24 h-24",
     normal: "w-48 h-48 md:w-64 md:h-64",
-    large: "w-64 h-64 md:w-96 md:h-96"
+    large: "w-56 h-56 md:w-96 md:h-96"
   };
 
   return (
@@ -58,7 +58,7 @@ export const Preloader = ({ isLoading, animationData }) => {
       ref={preloaderRef}
       className="fixed inset-0 z-50 flex items-center justify-center bg-palette-primary"
     >
-      <LoadingAnimation size="large" animationData={animationData} />
+      <LoadingAnimation size="normal" animationData={animationData} />
     </div>
   );
 };
@@ -80,9 +80,9 @@ export const LoadingPage = ({ animationData }) => {
   return (
     <div
       ref={loadingRef}
-      className="fixed inset-0 z-50 flex items-center justify-center w-full min-h-screen bg-palette-primary"
+      className="flex items-center justify-center w-full min-h-screen bg-palette-primary"
     >
-      <LoadingAnimation size="large" animationData={animationData} />
+      <LoadingAnimation size="small" animationData={animationData} />
     </div>
   );
 };

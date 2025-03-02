@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
-import { motion } from "framer-motion";
-import { ProhibitInset, X, XSquare } from "@phosphor-icons/react";
+import { motion, AnimatePresence } from "framer-motion";
+import { XSquare } from "@phosphor-icons/react";
 
 const Modal = ({ isOpen, onClose, children }) => {
   useEffect(() => {
@@ -12,7 +12,6 @@ const Modal = ({ isOpen, onClose, children }) => {
     return () => window.removeEventListener("keydown", handleEsc);
   }, [onClose]);
 
-  if (!isOpen) return null;
   const backdropVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1 },
@@ -21,45 +20,51 @@ const Modal = ({ isOpen, onClose, children }) => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { duration: 0.5, type: "spring", stiffness: 50 },
+      y: 0,
+      transition: { duration: 0.3, type: "spring", stiffness: 100 },
     },
+    exit: { opacity: 0, transition: { duration: 0.2 } },
   };
 
   return (
-    <motion.div
-      className="fixed inset-0 z-50 min-w-full min-h-screen my-5 flex items-center justify-center"
-      initial="hidden"
-      animate="visible"
-      exit="hidden"
-      variants={backdropVariants}
-      onClick={onClose} // close on backdrop click
-    >
-      <motion.div
-        className="relative w-full max-w-lg p-6 mx-4 text-palette-dark bg-palette-secondary rounded-lg"
-        variants={modalVariants}
-        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
-      >
-        {/* Close Button */}
-        <button
-          className="absolute md:hidden text-xl font-bold top-2 right-5"
-          onClick={onClose}
+    <AnimatePresence mode="wait">
+      {isOpen && (
+        <motion.div
+          className="fixed inset-0 z-50 flex items-center justify-center min-w-full min-h-screen backdrop-blur-sm"
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+          variants={backdropVariants}
+          onClick={onClose} // close on backdrop click
         >
-          <XSquare size={24} weight="fill" className="text-palette-primary" />
-        </button>
-        <button
-          className="absolute hidden md:flex text-xs bg-palette-primary px-2 rounded-md text-palette-secondary font-medium top-2 right-5"
-          onClick={onClose}
-        >
-          <kbd>
-            <abbr title="Escape">ESC</abbr>
-          </kbd>
-        </button>
+          <motion.div
+            className="relative w-full max-w-2xl p-6 mx-4 rounded-lg text-palette-dark bg-palette-secondary"
+            variants={modalVariants}
+            exit="exit"
+            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
+          >
+            {/* Close Button */}
+            <button
+              className="absolute text-xl font-bold md:hidden top-2 right-5"
+              onClick={onClose}
+            >
+              <XSquare size={24} weight="fill" className="text-palette-primary" />
+            </button>
+            <button
+              className="absolute hidden px-2 text-xs font-medium rounded-md md:flex bg-palette-primary text-palette-secondary top-2 right-5"
+              onClick={onClose}
+            >
+              <kbd>
+                <abbr title="Escape">ESC</abbr>
+              </kbd>
+            </button>
 
-
-        {/* Modal Content */}
-        {children}
-      </motion.div>
-    </motion.div>
+            {/* Modal Content */}
+            {children}
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 

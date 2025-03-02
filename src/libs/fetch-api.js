@@ -120,3 +120,15 @@ export const fetchCharactersFull = (id) => {
   if (!id) throw new Error("ID is required");
   return fetchApi(`characters/${id}/full`);
 };
+export const fetchCharactersPictures = (id) => {
+  if (!id) throw new Error("ID is required");
+  return fetchApi(`characters/${id}/pictures`);
+};
+export const fetchPersonPictures = (id) => {
+  if (!id) throw new Error("ID is required");
+  return fetchApi(`people/${id}/pictures`);
+};
+export const fetchPersonFull = (id) => {
+  if (!id) throw new Error("ID is required");
+  return fetchApi(`people/${id}/full`);
+};

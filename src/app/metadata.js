@@ -1,8 +1,14 @@
 import { page_content } from "@/libs/setting-app";
 
 export const metadata = {
+  metadataBase: new URL(page_content?.url_web),
   title: page_content.name_page,
   description: page_content.description,
+  openGraph: {
+    title: page_content.name_page,
+    description: page_content.description,
+    images: ["/nexanime-img.png"]
+  },
   verification: {
     google: "google",
     yandex: "yandex",
