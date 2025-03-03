@@ -1,17 +1,26 @@
 import * as motion from "framer-motion/client";
-import { fetchApi } from "@/libs/fetch-api";
+import { fetchApi, fetchNestedAnime } from "@/libs/fetch-api";
 import { page_content } from "@/libs/setting-app";
 import Image from "next/image";
 import Link from "next/link";
 import ListAnime from "@/components/AnimeList/ListAnime";
+import { getRandomIndex, reproduce } from "@/libs/simple-function";
 export const revalidate = 3600;
 export const dynamicParams = false;
 
 // Metadata
-export const metadata = {
-  title: page_content.name_page,
-  description: "Discover your favorite anime",
-};
+export async function generateMetadata() {
+  return {
+    title: page_content.name_page,
+    description: "Find anime, manga, characters and people on nexanime with a simple interface and data derived from myanimelist.",
+    openGraph: {
+      title: page_content.name_page,
+      description: "Find anime, manga, characters and people on nexanime with a simple interface and data derived from myanimelist.",
+      images: ["/images/nexanime-img.png"],
+      type: "website",
+    },
+  };
+}
 
 
 // Hero section component
@@ -65,7 +74,7 @@ const HeroSection = ({ topAnimeImage, newAnimeImage }) => (
               </Link>
             </motion.p>
           ) : (
-            <p>{topAnimeImage?.synopsis}</p>
+            <p className="w-1/2 text-xs">{topAnimeImage?.synopsis}</p>
           )}
         </article>
         <article className="mr-16 text-end md:text-start">
@@ -86,7 +95,7 @@ const HeroSection = ({ topAnimeImage, newAnimeImage }) => (
               </Link>
             </motion.p>
           ) : (
-            <p>{newAnimeImage?.synopsis}</p>
+            <p className="w-full text-xs md:w-1/2">{newAnimeImage?.synopsis}</p>
           )}
         </article>
       </div>
@@ -128,9 +137,17 @@ const HeroSection = ({ topAnimeImage, newAnimeImage }) => (
 
 const Page = async () => {
   const animePopular = await fetchApi("top/anime", "limit=6");
+  const mangaPopular = await fetchApi("top/manga", "limit=6");
   const newSeasons = await fetchApi("seasons/now", "limit=6");
-  const heroBackgroundImage = animePopular?.data?.[0];
-  const newBackgroundImage = newSeasons?.data?.[0];
+  const upcoming = await fetchApi("seasons/upcoming", "limit=6");
+  let recommendationsAnime = await fetchNestedAnime("recommendations/anime", "entry")
+  recommendationsAnime = reproduce(recommendationsAnime, 8)
+  // console.log(recommendationsAnime)
+  const indexPopular = getRandomIndex(animePopular?.data?.length)
+  const indexUpcoming = getRandomIndex(upcoming?.data?.length)
+  const heroBackgroundImage = animePopular?.data?.[indexPopular];
+  const newBackgroundImage = newSeasons?.data?.[indexUpcoming];
+
 
   return (
     <section>
@@ -145,10 +162,27 @@ const Page = async () => {
         addtionalText="See More..."
       />
       <ListAnime
+        api={mangaPopular?.data}
+        setTitle="Popular Manga"
+        linkHref="/popular/manga"
+        addtionalText="See More..."
+      />
+      <ListAnime
         api={newSeasons?.data}
         setTitle="New Seasons"
-        linkHref="/now"
+        linkHref="/seasons/now"
         addtionalText="See More..."
+      />
+      <ListAnime
+        api={upcoming?.data}
+        setTitle="Upcoming"
+        linkHref="/seasons/upcoming"
+        addtionalText="See More..."
+      />
+      <ListAnime
+        api={recommendationsAnime}
+        setTitle="Recommend Anime"
+        path="anime"
       />
       {/* <Suspense fallback={<SkeletonLoading />}>
         <AnimeList

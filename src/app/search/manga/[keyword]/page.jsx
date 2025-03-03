@@ -6,12 +6,15 @@ export async function generateMetadata({ params }) {
     return str.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
   }
   const getParams = keyword.trim().replace(/-/g, ' ')
-    return {
-      title: `${capitalizeWords(getParams)} | Search`,
-      openGraph: {
-      title: `${capitalizeWords(getParams)} | Search`,
-      description: `Searching for your favorite anime and manga from the keyword ${capitalizeWords(getParams)}`,
-    }
+  return {
+    title: `${capitalizeWords(getParams)} | Search Manga`,
+    description: "Find anime, manga, characters, and people on nexanime with the latest technology and simple designs.",
+    openGraph: {
+    title: `${capitalizeWords(getParams)} | Search Manga`,
+    description: `Find anime, manga, characters, and people on nexanime with the latest technology and simple designs from the keyword ${capitalizeWords(getParams)}`,
+    images: ["/images/nexanime-img-search.png"],
+    type: "website"
+  }
   }
   }
 

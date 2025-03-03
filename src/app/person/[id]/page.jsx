@@ -29,7 +29,7 @@ export async function generateMetadata({ params }) {
   const person = await getPerson(params.id);
   const title = person?.name || "Default Title";
   const description = person?.about || "No description available."
-  const imageUrl = person?.images?.jpg?.image_url || "/nexanime-img.png"
+  const imageUrl = person?.images?.jpg?.image_url || "/images/nexanime-img.png"
   return {
     title,
     description,

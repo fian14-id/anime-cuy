@@ -24,26 +24,26 @@ export default function ClientCharacter({
   const [isAbout, setIsAbout] = useState("");
   const [currentIndex, setCurrentIndex] = useState(1);
 
-  useEffect(() => {
-    setIsLoading(true);
+  // useEffect(() => {
+  //   setIsLoading(true);
     
-    if (pictures && pictures.length > 0) {
-      checkImageRatioAndApplyStyle(pictures[getRandomPicture].jpg.image_url)
-        .then((className) => {
-          setImageClass(className);
-          setIsLoading(false);
-          if (character?.about) {
-            setIsAbout(formatToParagraph(character?.about));
-          }
-        })
-        .catch((error) => {
-          console.error("Error checking image ratio: ", error);
-          setIsLoading(false);
-        });
-    } else {
-      setIsLoading(false);
-    }
-  }, [pictures, getRandomPicture, character?.about]);
+  //   if (pictures && pictures.length > 0) {
+  //     checkImageRatioAndApplyStyle(pictures[getRandomPicture].jpg.image_url)
+  //       .then((className) => {
+  //         setImageClass(className);
+  //         setIsLoading(false);
+  //         if (character?.about) {
+  //           setIsAbout(formatToParagraph(character?.about));
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error checking image ratio: ", error);
+  //         setIsLoading(false);
+  //       });
+  //   } else {
+  //     setIsLoading(false);
+  //   }
+  // }, [pictures, getRandomPicture, character?.about]);
 
   const handlePrevIndex = () => {
     console.log(currentIndex)
@@ -115,9 +115,7 @@ export default function ClientCharacter({
             loading="lazy"
             src={pictures[currentIndex-1]?.jpg?.image_url}
             alt={character.name}
-            className={`relative hd-image rounded-md w-full ${imageClass === "aspect-[1/1.56] object-cover" ? "aspect-[3/4] object-cover" : imageClass} object-cover ${
-              isLoading ? "opacity-0" : "opacity-100"
-            }`}
+            className={`relative hd-image rounded-md w-full aspect-[3/4] object-cover `}
           />
         )}
         <div className="absolute top-0 z-10 flex w-full h-full">

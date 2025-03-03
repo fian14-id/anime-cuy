@@ -7,12 +7,15 @@ export async function generateMetadata({ params }) {
   }
   const getParams = keyword.trim().replace(/-/g, ' ')
     return {
-      title: `${capitalizeWords(getParams)} | Search`,
-      openGraph: {
-      title: `${capitalizeWords(getParams)} | Search`,
-      description: `Searching for your favorite anime and manga from the keyword ${capitalizeWords(getParams)}`,
+        title: `${capitalizeWords(getParams)} | Search Anime`,
+        description: "Find anime, manga, characters, and people on nexanime with the latest technology and simple designs.",
+        openGraph: {
+        title: `${capitalizeWords(getParams)} | Search Anime`,
+        description: `Find anime, manga, characters, and people on nexanime with the latest technology and simple designs from the keyword ${capitalizeWords(getParams)}`,
+        images: ["/images/nexanime-img-search.png"],
+        type: "website",
+      }
     }
-  }
   }
 
 const Page = async ({ params }) => {

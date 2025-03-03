@@ -14,8 +14,8 @@ const AnimeCard = ({ result }) => (
   <Link href={`/${result?.genres?.[0]?.type}/${result.mal_id}`}>
     <motion.article initial={{y: -50, opacity: 0}} whileInView={{y: 0, opacity: 1}} viewport={{once:true}} transition={{ease: "easeIn", duration: 0.5}} className="relative overflow-hidden rounded-md shadow-lg group">
       <Image
-        src={result.images.jpg.large_image_url}
-        alt={result.title}
+        src={result?.images?.jpg?.large_image_url}
+        alt={result?.title}
         width={900}
         height={1600}
         className="w-full aspect-[9/16] transition-transform hd-image duration-300 group-hover:scale-105"
@@ -23,9 +23,9 @@ const AnimeCard = ({ result }) => (
       />
       <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-palette-secondary to-transparent">
         <h3 className="font-semibold text-palette-primary">
-          {result.title.length > 25 ? `${result.title.slice(0, 25)}...` : result.title}
+          {result?.title?.length > 25 ? `${result?.title?.slice(0, 25)}...` : result?.title}
         </h3>
-        {result.genres && (
+        {result?.genres && (
           <p className="text-xs md:text-sm text-palette-primary/80">
             {result.genres.map((genre, i) => (
               <span key={genre.mal_id}>

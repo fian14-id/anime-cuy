@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { MagnifyingGlass, SignIn } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
@@ -136,7 +136,7 @@ const Navbar = () => {
               )}
             </main>
             <main className="mt-4">
-              {page_content?.feature?.search_type ? (
+              {page_content?.feature?.search_type?.length > 0 ? (
                 page_content.feature.search_type.map((type, i) => {
                   return (
                     <section key={i} className="relative flex gap-2 px-4 py-2">
@@ -198,46 +198,55 @@ const Navbar = () => {
           </Link>
         </ul>
         {/* for mobile menu */}
+        <AnimatePresence mode="wait">
         {isMenuOpen && (
           <motion.div
-            initial={{ height: 0 }}
-            animate={{ height: "auto" }}
-            exit={{ height: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="absolute left-0 z-50 flex flex-col items-end min-w-full min-h-screen gap-10 px-6 mt-8 text-xl font-bold md:hidden"
+            className="absolute right-0 mt-4 z-30 flex flex-col min-w-full min-h-[100svh] bg-palette-primary text-xl font-bold md:hidden"
           >
             <div
-              className="transition-all ease-in-out hover:scale-125"
+              className="mt-5 transition-all ease-in-out hover:brightness-75"
               onClick={openSearch}
             >
-              <motion.h2
-                initial={{ y: -100, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -100, opacity: 0 }}
-                transition={{ ease: "backInOut", duration: 0.5 }}
+              <motion.h2      
+              initial={{ width: "200%" }}
+              animate={{ width: "100%" }}
+              exit={{ width: "200%" }}
+              transition={{ ease: "backInOut", duration: 0.5 }}
               >
-                <button type="button">
-                  <MagnifyingGlass size={24} weight="bold" className="w-8 h-8 p-2 rounded-full shadow-xl text-palette-accent bg-palette-secondary bottom-10 right-5 hover:brightness-75" />
+                <button type="button" className="flex items-center justify-end w-full px-6 py-4 text-palette-secondary md:py-6 bg-palette-primary">
+                  <MagnifyingGlass size={24} weight="bold" />
+                  <span className="ml-4 text-lg font-semibold tracking-widest uppercase">Search</span>
                 </button>
               </motion.h2>
             </div>
             <Link
-              className="transition-all ease-in-out hover:scale-125"
+              className="transition-all ease-in-out hover:brightness-75"
               onClick={toggleMenu}
               href="/login"
             >
               <motion.h2
-                initial={{ y: -80, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -100, opacity: 0 }}
-                transition={{ ease: "backInOut", duration: 0.5, delay: 0.5 }}
-                className="underline"
+                initial={{ width: "200%" }}
+                animate={{ width: "100%" }}
+                exit={{ width: "200%" }}
+                transition={{ ease: "backInOut", duration: 0.5, delay: 0.3 }}
               >
-                <SignIn size={24} weight="bold" className="w-8 h-8 p-2 rounded-full shadow-xl text-palette-accent bg-palette-secondary bottom-10 right-5 hover:brightness-75" />
+                <button type="button" className="flex items-center justify-end w-full px-6 py-4 text-palette-secondary md:py-6 bg-palette-primary">
+                <SignIn size={24} weight="bold" />
+                  <span className="ml-4 text-lg font-semibold tracking-widest uppercase">Login</span>
+                </button>
               </motion.h2>
             </Link>
+            <main className="absolute w-full px-6 bottom-20 text-end">
+              <h2 className="text-sm font-semibold">Developed by{" "}<Link href={page_content?.main_web} target="_blank" className="text-palette-accent">{page_content?.developed_by}</Link></h2>
+              <p className="text-xs font-medium">Copyright © {new Date().getFullYear()} - All right reserved by Fianity</p>
+            </main>
           </motion.div>
         )}
+        </AnimatePresence>
       </main>
     </motion.nav>
   );

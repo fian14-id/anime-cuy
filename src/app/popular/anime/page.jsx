@@ -7,7 +7,7 @@ export async function generateMetadata() {
     openGraph: {
       title: "Top Trending Anime | Most Popular Anime Right Now",
       description: "Explore the top trending anime with the highest ratings! Don't miss out on the best anime that everyone is talking about.",
-      images: ["/nexanime-img.png"],
+      images: ["/images/nexanime-img.png"],
       type: "website",
     },
   };

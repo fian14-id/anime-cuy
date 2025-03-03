@@ -7,7 +7,7 @@ export const metadata = {
   openGraph: {
     title: page_content.name_page,
     description: page_content.description,
-    images: ["/nexanime-img.png"]
+    images: ["/images/nexanime-img.png"]
   },
   verification: {
     google: "google",

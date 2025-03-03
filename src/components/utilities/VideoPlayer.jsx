@@ -16,7 +16,7 @@ const VideoPlayer = ({youtubeId, state, close, stream}) => {
     }
   return (
     <Modal isOpen={state} onClose={close}>
-        <main className="relative flex items-center justify-center w-full px-2 mt-2 aspect-[16/8.8] md:mt-4">
+        <main className="relative flex items-center justify-center w-full px-2 mt-5 md:mt-10 aspect-[16/8.8]">
         <YouTube opts={option} loading="lazy" className="w-full h-full rounded-md" videoId={youtubeId} onReady={(event) => event.target.pauseVideo()} />
         </main>
         {stream.length > 0 ? <section className="mt-2 md:mt-6">

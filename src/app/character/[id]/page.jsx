@@ -27,7 +27,7 @@ export async function generateMetadata({ params }) {
   const character = await getCharacter(params.id);
   const title = character?.name || "Default Title";
   const description = character?.about || "No description available."
-  const imageUrl = character?.images?.jpg?.image_url || "/nexanime-img.png"
+  const imageUrl = character?.images?.jpg?.image_url || "/images/nexanime-img.png"
   return {
     title,
     description,

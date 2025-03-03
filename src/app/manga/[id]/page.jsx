@@ -15,9 +15,9 @@ const getMangaDetails = async (id) => {
 };
 export async function generateMetadata({ params }) {
   const details = await getMangaDetails(params.id);
-  const title = details?.name || "Default Title";
-  const description = details?.about || "No description available."
-  const imageUrl = details?.images?.jpg?.image_url || "/nexanime-img.png"
+  const title = details?.title || "Default Title";
+  const description = details?.synopsis || "No description available."
+  const imageUrl = details?.images?.jpg?.image_url || "/images/nexanime-img.png"
   return {
     title,
     description,

@@ -81,6 +81,10 @@ export const fetchSearchCharacter = (query) => {
   if (!query) throw new Error("Search query is required");
   return fetchApi('characters', `q=${encodeURIComponent(query)}`);
 };  
+export const fetchSearchPerson = (query) => {
+  if (!query) throw new Error("Search query is required");
+  return fetchApi('people', `q=${encodeURIComponent(query)}`);
+};  
 
 export const fetchPaginationAnimePopular = (page) => {
   if (!page) throw new Error("Page is required");
@@ -90,6 +94,11 @@ export const fetchPaginationAnimePopular = (page) => {
 export const fetchPaginationMangaPopular = (page) => {
   if (!page) throw new Error("Page is required");
   return fetchApi('top/manga', `page=${page}&sfw`);
+};
+
+export const fetchPaginationUpcoming = (page) => {
+  if (!page) throw new Error("Page is required");
+  return fetchApi('seasons/upcoming', `page=${page}&sfw`);
 };
 
 export const fetchPaginationNow = (page) => {
@@ -132,3 +141,8 @@ export const fetchPersonFull = (id) => {
   if (!id) throw new Error("ID is required");
   return fetchApi(`people/${id}/full`);
 };
+export const fetchNestedAnime = async(resource, objectProperty) => {
+  if (!resource) throw new Error("Resource is required")
+  const response = await fetchApi(resource)
+  return response.data.flatMap(item => item[objectProperty])
+}

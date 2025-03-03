@@ -73,31 +73,31 @@ const DetailContentManga = ({ animeData }) => {
         <p className="text-sm leading-relaxed">{animeData.synopsis}</p>
         <table className="mt-4 space-y-2" aria-hidden="true">
           <tbody>
-            {animeData?.type?.length > 0 ? (
+            {animeData?.type !== null ? (
               <tr>
                 <td>Type&nbsp;</td>
                 <td>: {animeData.type}</td>
               </tr>
             ): null}
-            {animeData?.chapters?.length > 0 ? (
+            {animeData?.chapters !== null ? (
               <tr>
                 <td>Chapters&nbsp;</td>
                 <td>: {animeData.chapters}</td>
               </tr>
             ): null}
-            {animeData?.rank ? (
+            {animeData?.rank !== null ? (
               <tr>
                 <td>Rank&nbsp;</td>
                 <td>: {animeData.rank}</td>
               </tr>
             ): null}
-            {animeData?.score?.length > 0 ? (
+            {animeData?.score !== null ? (
               <tr>
                 <td>Score&nbsp;</td>
                 <td>: {animeData.score}</td>
               </tr>
             ): null}
-            {animeData?.status?.length > 0 ? (
+            {animeData?.status !== null ? (
               <tr>
                 <td>Status&nbsp;</td>
                 <td>: {animeData.status}</td>

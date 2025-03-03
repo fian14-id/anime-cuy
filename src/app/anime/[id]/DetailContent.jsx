@@ -106,43 +106,43 @@ const DetailContentAnime = ({ animeData }) => {
         <p className="text-sm leading-relaxed text-justify">{animeData?.synopsis}</p>
         <table className="mt-4 space-y-2" aria-hidden="true">
           <tbody>
-            {animeData?.rank ? (
+            {animeData?.rank !== null ? (
               <tr>
                 <td>Rank&nbsp;</td>
                 <td>: {animeData.rank}</td>
               </tr>
             ) : null}
-            {animeData?.score ? (
+            {animeData?.score !== null ? (
               <tr>
                 <td>Score&nbsp;</td>
                 <td>: {animeData.score}</td>
               </tr>
             ) : null}
-            {animeData?.episodes ? (
+            {animeData?.episodes !== null ? (
               <tr>
                 <td>Episodes&nbsp;</td>
                 <td>: {animeData.episodes}</td>
               </tr>
             ) : null}
-            {animeData?.status ? (
+            {animeData?.status !== null ? (
               <tr>
                 <td>Status&nbsp;</td>
                 <td>: {animeData.status}</td>
               </tr>
             ) : null}
-            {animeData?.rating ? (
+            {animeData?.rating !== null ? (
               <tr>
                 <td>Rating&nbsp;</td>
                 <td>: {animeData.rating}</td>
               </tr>
             ) : null}
-            {animeData?.season ? (
+            {animeData?.season !== null ? (
               <tr>
                 <td>Season&nbsp;</td>
                 <td>: {toCapitalize(animeData?.season)}</td>
               </tr>
             ) : null}
-            {animeData?.year ? (
+            {animeData?.year !== null ? (
               <tr>
                 <td>Year&nbsp;</td>
                 <td>
@@ -150,7 +150,7 @@ const DetailContentAnime = ({ animeData }) => {
                 </td>
               </tr>
             ) : null}
-            {animeData?.studios ? (
+            {animeData?.studios?.length > 0 ? (
               <tr>
                 <td>Studio&nbsp;</td>
                 <td>

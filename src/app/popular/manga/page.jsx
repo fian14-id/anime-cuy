@@ -6,7 +6,7 @@ export async function generateMetadata() {
     openGraph: {
       title: "Best-Selling Manga | Top Popular Manga to Read",
       description: "Find the best-rated manga with incredible stories! Here’s a list of must-read manga that every fan should check out.",
-      images: ["/nexanime-img.png"],
+      images: ["/images/nexanime-img.png"],
       type: "website",
     },
   };

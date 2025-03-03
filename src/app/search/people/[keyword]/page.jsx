@@ -1,6 +1,6 @@
 import HeaderProfile from "@/components/ProfileList/HeaderProfile";
 import ProfileList from "@/components/ProfileList/ProfileList";
-import { fetchSearchCharacter } from "@/libs/fetch-api";
+import { fetchSearchPerson } from "@/libs/fetch-api";
 
 export async function generateMetadata({ params }) {
     const { keyword } = params;
@@ -9,10 +9,10 @@ export async function generateMetadata({ params }) {
     }
     const getParams = keyword.trim().replace(/-/g, ' ')
       return {
-        title: `${capitalizeWords(getParams)} | Search Character`,
+        title: `${capitalizeWords(getParams)} | Search People`,
         description: "Find anime, manga, characters, and people on nexanime with the latest technology and simple designs.",
         openGraph: {
-        title: `${capitalizeWords(getParams)} | Search Character`,
+        title: `${capitalizeWords(getParams)} | Search People`,
         description: `Find anime, manga, characters, and people on nexanime with the latest technology and simple designs from the keyword ${capitalizeWords(getParams)}`,
         images: ["/images/nexanime-img-search.png"],
         type: "website"
@@ -23,21 +23,21 @@ export async function generateMetadata({ params }) {
 const Page = async({params}) => {
     const {keyword} = params
     const getParams = keyword.trim().replace(/-/g, " ");
-    const getSearchCharacter = await fetchSearchCharacter(keyword)
+    const getSearchPerson = await fetchSearchPerson(keyword)
 
     return  (
         <section
-      className={`w-full ${getSearchCharacter?.data} ? (min-h-full) : (min-h-screen) py-6`}
+      className={`w-full ${getSearchPerson?.data} ? (min-h-full) : (min-h-screen) py-6`}
     >
-      {getSearchCharacter?.data ? (
+      {getSearchPerson?.data ? (
         <main>
           <HeaderProfile title={getParams} />
           <ProfileList
-            api={getSearchCharacter}
-            setTitle={`Characters result`}
+            api={getSearchPerson}
+            setTitle={`People result`}
             linkHref=""
             addtionalText=""
-            typeProfile="character"
+            typeProfile="person"
           />
         </main>
       ) : (

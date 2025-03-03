@@ -44,14 +44,14 @@ const ToTop = () => {
       {isVisible && (
         <button
           onClick={scrollToTop}
-          className="fixed z-50 p-3 transition-all duration-300 rounded-full shadow-xl text-palette-accent bg-palette-secondary bottom-10 right-5 hover:brightness-75"
+          className="fixed z-20 p-3 transition-all duration-300 rounded-full shadow-xl text-palette-accent bg-palette-secondary bottom-10 right-5 hover:brightness-75"
         >
           <div className="text-palette-accent">
           <ArrowUp weight="bold" />
           </div>
         </button>
       )}
-      {(!isVisible && pathname !== "/") && <button onClick={backToPrev} className="fixed z-50 p-3 transition-all duration-300 rounded-full shadow-xl text-palette-accent bg-palette-secondary bottom-10 right-5 hover:brightness-75"><ArrowUUpLeft weight="bold" /></button>}
+      {(!isVisible && pathname !== "/") && <button onClick={backToPrev} className="fixed z-20 p-3 transition-all duration-300 rounded-full shadow-xl text-palette-accent bg-palette-secondary bottom-10 right-5 hover:brightness-75"><ArrowUUpLeft weight="bold" /></button>}
     </div>
   );
 };

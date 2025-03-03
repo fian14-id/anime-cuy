@@ -38,7 +38,7 @@ export const page_content = {
         search_type: [
             {
                 name_type: "allType",
-                label_type: "All",
+                label_type: "All (Anime & Manga)",
                 value: "all",
             },
             {
@@ -55,6 +55,11 @@ export const page_content = {
                 name_type: "charType",
                 label_type: "Characters",
                 value: "characters",
+            },
+            {
+                name_type: "peopleType",
+                label_type: "People",
+                value: "people",
             },
         ],
         genres_sensor: ["Hentai", "Erotica"]

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 
-const ListAnime = ({ api, addtionalText, linkHref, setTitle }) => {
+const ListAnime = ({ api, addtionalText, linkHref, setTitle, path }) => {
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [isHovered, setIsHovered] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
@@ -45,19 +45,25 @@ const ListAnime = ({ api, addtionalText, linkHref, setTitle }) => {
               className="relative overflow-x-hidden"
             >
               <Link
-                href={`/${result?.genres ? result?.genres?.[0]?.type : result?.anime ? "anime" : "manga" }/${result.mal_id ? result.mal_id : result?.anime ? result?.anime?.mal_id : result?.manga?.mal_id}`}
+                href={
+                  path === null || path === undefined || path === ""
+                    ? `/${result?.genres?.[0]?.type || (result?.anime ? "anime" : "manga")}/${
+                        result.mal_id || result?.anime?.mal_id || result?.manga?.mal_id
+                      }`
+                    : `${path}/${result?.mal_id}`
+                }
                 onMouseEnter={() => setIsHovered(i)}
                 onMouseLeave={() => setIsHovered(false)}
                 onMouseMove={handleMouseMove}
                 className="flex justify-between w-full px-4 py-4 duration-300 ease-in-out border-b-2 opacity-75 md:px-6 border-palette-secondary contrast-50 hover:opacity-100 hover:contrast-100"
               >
-                <h2 className="w-1/2 text-lg font-semibold md:text-3xl">
+                <h2 className="w-1/2 flex items-center text-lg font-semibold md:text-3xl">
                   {result?.title?.length > 0 ? result?.title?.length > 25
                     ? `${result.title.slice(0, 25)}...`
                     : result.title : result?.anime ? `${result.anime.title.slice(0, 25)}...` : `${result.manga.title.slice(0, 25)}...`}
                 </h2>
                 <span className="flex items-center justify-center w-1/12 text-xs text-center md:text-sm">{result?.score ? result.score : result?.role}</span>
-                <p className="flex flex-col items-center justify-end w-1/2 text-xs font-medium uppercase md:flex-row text-end sm:text-sm md:text-lg">
+                <p className="flex flex-col items-center justify-center md:justify-end w-1/2 text-xs font-medium uppercase md:flex-row text-end sm:text-sm md:text-lg">
                   {result?.genres?.map((genre, i) => (
                     <span key={genre.mal_id}>
                       {genre.name}

@@ -11,35 +11,14 @@ export const getRandomIndex = (max) => {
     return Math.floor(Math.random() * max);
 }
 
-export const formatToParagraph = (text) => {
-  if (!text) return "I can't introduce myself :(";
-
-  // Pisahkan teks menjadi kalimat berdasarkan tanda titik (.), tanda tanya (?), atau tanda seru (!)
-  const sentences = text.match(/[^.!?]+[.!?]+/g);
-  
-  if (!sentences) return text; // Jika tidak ditemukan kalimat, kembalikan teks asli
-
-  let paragraphs = [];
-  let tempParagraph = [];
-
-  sentences.forEach((sentence) => {
-    tempParagraph.push(sentence.trim());
-
-    // Setiap paragraf memiliki 2 - 4 kalimat
-    if (tempParagraph.length >= 2 && (Math.random() < 0.5 || tempParagraph.length === 4)) {
-      paragraphs.push(tempParagraph.join(" "));
-      tempParagraph = [];
-    }
-  });
-
-  // Tambahkan sisa kalimat ke paragraf terakhir
-  if (tempParagraph.length) {
-    paragraphs.push(tempParagraph.join(" "));
+export const reproduce = (data, gap) => {
+  const firstNumber = ~~(Math.random() * (data.length - gap) + 1)
+  const lastNumber = firstNumber + gap
+  const result = {
+    data: data.slice(firstNumber, lastNumber)
   }
-
-  return paragraphs.join("\n\n"); // Gabungkan dengan pemisah paragraf
-};
-
+  return result
+}
 
 /**
  * Fungsi untuk mengecek rasio gambar dan menerapkan kelas Tailwind CSS yang sesuai
