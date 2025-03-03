@@ -1,6 +1,6 @@
 // File: app/sitemap.js
 
-import { fetchSearchAnime, fetchSearchManga } from "@/libs/fetch-api"
+import { fetchSearchAnime, fetchSearchManga, fetchSearchCharacter, fetchSearchPerson } from "@/libs/fetch-api"
 import { parseISO } from 'date-fns'
 
 const BASE_URL = "https://nexanime.fianity.com";
@@ -30,7 +30,17 @@ const createSearchEntries = (item) => {
             url: `${BASE_URL}/search/manga/${encodedTitle}`,
             lastModified: parseISO(item?.aired?.from || new Date().toISOString()),
             priority: 0.8
-        }
+        },
+        {
+            url: `${BASE_URL}/search/characters/${encodedTitle}`,
+            lastModified: parseISO(item?.aired?.from || new Date().toISOString()),
+            priority: 0.8
+        },
+        {
+            url: `${BASE_URL}/search/people/${encodedTitle}`,
+            lastModified: parseISO(item?.aired?.from || new Date().toISOString()),
+            priority: 0.8
+        },
     ];
 };
 
@@ -42,8 +52,10 @@ export default async function sitemap() {
     try {
         const responseSearchAnime = await fetchSearchAnime();
         const responseSearchManga = await fetchSearchManga();
+        const responseSearchCharacter = await fetchSearchCharacter();
+        const responseSearchPeople = await fetchSearchPerson();
 
-        if (!responseSearchAnime || !responseSearchManga) {
+        if (!responseSearchAnime || !responseSearchManga || !responseSearchCharacter || !responseSearchPeople) {
             return []
         }
 
@@ -70,6 +82,16 @@ export default async function sitemap() {
                 priority: 0.9
             },
             {
+                url: `${BASE_URL}/search/characters`,
+                lastModified: new Date(),
+                priority: 0.9
+            },
+            {
+                url: `${BASE_URL}/search/people`,
+                lastModified: new Date(),
+                priority: 0.9
+            },
+            {
                 url: `${BASE_URL}/popular/anime`,
                 lastModified: new Date(),
                 priority: 0.9
@@ -79,10 +101,20 @@ export default async function sitemap() {
                 lastModified: new Date(),
                 priority: 0.9
             },
+            {
+                url: `${BASE_URL}/seasons/now`,
+                lastModified: new Date(),
+                priority: 0.9
+            },
+            {
+                url: `${BASE_URL}/seasons/upcoming`,
+                lastModified: new Date(),
+                priority: 0.9
+            },
         ];
 
         // Generate search entries for all items
-        const allItems = [...responseSearchAnime, ...responseSearchManga];
+        const allItems = [...responseSearchAnime, ...responseSearchManga, ...responseSearchCharacter, ...responseSearchPeople];
         const searchEntries = allItems.flatMap(createSearchEntries);
 
         // Menggabungkan semua entries
