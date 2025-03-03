@@ -1,6 +1,6 @@
 // File: app/sitemap.js
 
-import { fetchSearchAnime, fetchSearchManga, fetchSearchCharacter, fetchSearchPerson, fetchCharactersFull, fetchDetailsAnime, fetchDetailsManga, fetchPersonFull } from "@/libs/fetch-api"
+import { fetchSearchAnime, fetchSearchManga, fetchSearchCharacter, fetchSearchPerson } from "@/libs/fetch-api"
 import { parseISO } from 'date-fns'
 
 const BASE_URL = "https://nexanime.fianity.com";
@@ -11,7 +11,7 @@ const BASE_URL = "https://nexanime.fianity.com";
  * @returns {Array} Array of sitemap entries for all search routes
  */
 const createSearchEntries = (item) => {
-    const encodedTitle = encodeURIComponent(item?.title);
+    const encodedTitle = encodeURIComponent(item?.title ? item.title : item?.name);
     return [
         // URL untuk pencarian general
         {
