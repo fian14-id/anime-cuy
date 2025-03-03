@@ -25,7 +25,7 @@ const rateLimiter = {
     return new Promise(resolve => {
       setTimeout(async () => {
         resolve(await this.getToken());
-      }, 1000);
+      }, 3000);
     });
   }
 };
@@ -33,6 +33,11 @@ const rateLimiter = {
 // Core reusable fetch function
 export const fetchApi = cache(async (resource, query = '', retries = 3) => {
   await rateLimiter.getToken();
+
+  if (!query) {
+    console.warn(`fetchApi dipanggil tanpa query di resource: ${resource}`);
+    return { data: [], error: "Query is required" }; // atau return empty array agar tidak error
+  }
   
   const endpoint = `${baseUrl}/${resource}${query ? `?${query}` : ''}`;
   
@@ -43,7 +48,7 @@ export const fetchApi = cache(async (resource, query = '', retries = 3) => {
     
     if (response.status === 429 && retries > 0) {
       console.log(`Rate limited, retrying in 2 seconds... (${retries} retries left)`);
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 3000));
       return fetchApi(resource, query, retries - 1);
     }
     

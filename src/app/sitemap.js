@@ -1,6 +1,6 @@
 // File: app/sitemap.js
 
-import { fetchSearchAnime, fetchSearchManga, fetchSearchCharacter, fetchSearchPerson } from "@/libs/fetch-api"
+import { fetchSearchAnime, fetchSearchManga, fetchSearchCharacter, fetchSearchPerson, fetchCharactersFull, fetchDetailsAnime, fetchDetailsManga, fetchPersonFull } from "@/libs/fetch-api"
 import { parseISO } from 'date-fns'
 
 const BASE_URL = "https://nexanime.fianity.com";
@@ -88,6 +88,16 @@ export default async function sitemap() {
             },
             {
                 url: `${BASE_URL}/search/people`,
+                lastModified: new Date(),
+                priority: 0.9
+            },
+            {
+                url: `${BASE_URL}/character`,
+                lastModified: new Date(),
+                priority: 0.9
+            },
+            {
+                url: `${BASE_URL}/person`,
                 lastModified: new Date(),
                 priority: 0.9
             },
