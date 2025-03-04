@@ -28,10 +28,8 @@ export default async function sitemap() {
     try {
         // Dapatkan anime dan manga populer terlebih dahulu
         const animeResponse = await fetchApi('top/anime', 'limit=5&sfw');
-        const mangaResponse = await fetchApi('seasons/now', 'limit=5&sfw');
 
         const animeItems = animeResponse.data || [];
-        const mangaItems = mangaResponse.data || [];
 
         // Array untuk menyimpan semua entri karakter dan orang (people)
         let characterItems = [];
@@ -59,23 +57,6 @@ export default async function sitemap() {
                             aired: anime.aired // Gunakan tanggal anime sebagai referensi
                         });
                     }
-                }
-            }
-        }
-
-        // Dapatkan satu karakter untuk setiap manga
-        for (const manga of mangaItems) {
-            if (manga.mal_id) {
-                const characterResponse = await fetchApi(`manga/${manga.mal_id}/characters`);
-                if (characterResponse.data && characterResponse.data.length > 0) {
-                    // Ambil hanya karakter pertama (biasanya karakter utama)
-                    const mainCharacter = characterResponse.data[0];
-                    
-                    // Tambahkan ke daftar karakter
-                    characterItems.push({
-                        ...mainCharacter.character,
-                        aired: manga.published // Gunakan tanggal publikasi manga
-                    });
                 }
             }
         }
@@ -160,11 +141,6 @@ export default async function sitemap() {
                 lastModified: parseISO(anime.aired?.from || new Date().toISOString()),
                 priority: 0.9
             })),
-            ...mangaItems.map(manga => ({
-                url: `${BASE_URL}/manga/${manga.mal_id}`,
-                lastModified: parseISO(manga.published?.from || new Date().toISOString()),
-                priority: 0.9
-            })),
             ...characterItems.map(character => ({
                 url: `${BASE_URL}/character/${character.mal_id}`,
                 lastModified: parseISO(character.aired?.from || new Date().toISOString()),
@@ -178,7 +154,7 @@ export default async function sitemap() {
         ];
 
         // Generate search entries for all items
-        const allItems = [...animeItems, ...mangaItems, ...characterItems, ...peopleItems];
+        const allItems = [...animeItems, ...characterItems, ...peopleItems];
         const searchEntries = allItems.flatMap(createSearchEntries);
 
         // Menggabungkan semua entries
