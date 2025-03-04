@@ -1,5 +1,6 @@
 import { fetchSearchAnime } from "@/libs/fetch-api"
 import AnimeList from "@/components/AnimeList"
+import { page_content } from "@/libs/setting-app";
 export async function generateMetadata({ params }) {
   const { keyword } = params;
   const capitalizeWords = (str) => {
@@ -9,6 +10,7 @@ export async function generateMetadata({ params }) {
     return {
         title: `${capitalizeWords(getParams)} | Search Anime`,
         description: "Find anime, manga, characters, and people on nexanime with the latest technology and simple designs.",
+        metadataBase: new URL(page_content?.url_web),
         openGraph: {
         title: `${capitalizeWords(getParams)} | Search Anime`,
         description: `Find anime, manga, characters, and people on nexanime with the latest technology and simple designs from the keyword ${capitalizeWords(getParams)}`,

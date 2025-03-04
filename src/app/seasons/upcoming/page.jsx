@@ -5,6 +5,7 @@ export async function generateMetadata() {
       title: 'Anime & Manga Upcoming - Nexanime',
       description: 'Jadwal rilis anime dan manga terbaru setiap hari. Dapatkan informasi lengkap dan tetap update!',
       keywords: 'jadwal anime, jadwal manga, anime release, manga release, update anime, update manga',
+      metadataBase: new URL(page_content?.url_web),
       openGraph: {
         title: 'Anime & Manga Upcoming - Nexanime',
         description: 'Jadwal rilis anime dan manga terbaru setiap hari. Dapatkan informasi lengkap dan tetap update!',

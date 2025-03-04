@@ -13,6 +13,7 @@ export async function generateMetadata() {
   return {
     title: page_content.name_page,
     description: "Find anime, manga, characters and people on nexanime with a simple interface and data derived from myanimelist.",
+    metadataBase: new URL(page_content?.url_web),
     openGraph: {
       title: page_content.name_page,
       description: "Find anime, manga, characters and people on nexanime with a simple interface and data derived from myanimelist.",

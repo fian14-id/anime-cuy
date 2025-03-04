@@ -1,6 +1,7 @@
 import HeaderProfile from "@/components/ProfileList/HeaderProfile";
 import ProfileList from "@/components/ProfileList/ProfileList";
 import { fetchSearchCharacter } from "@/libs/fetch-api";
+import { page_content } from "@/libs/setting-app";
 
 export async function generateMetadata({ params }) {
     const { keyword } = params;
@@ -11,6 +12,7 @@ export async function generateMetadata({ params }) {
       return {
         title: `${capitalizeWords(getParams)} | Search Character`,
         description: "Find anime, manga, characters, and people on nexanime with the latest technology and simple designs.",
+        metadataBase: new URL(page_content?.url_web),
         openGraph: {
         title: `${capitalizeWords(getParams)} | Search Character`,
         description: `Find anime, manga, characters, and people on nexanime with the latest technology and simple designs from the keyword ${capitalizeWords(getParams)}`,
