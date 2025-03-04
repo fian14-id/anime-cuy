@@ -1,3 +1,4 @@
+import { page_content } from "@/libs/setting-app";
 import UpcomingClient from "./UpcomingClient";
 
 export async function generateMetadata() {
