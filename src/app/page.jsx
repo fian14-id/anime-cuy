@@ -141,7 +141,7 @@ const Page = async () => {
   const newSeasons = await fetchApi("seasons/now", "limit=6");
   const upcoming = await fetchApi("seasons/upcoming", "limit=6");
   let recommendationsAnime = await fetchNestedAnime("recommendations/anime", "entry")
-  recommendationsAnime = reproduce(recommendationsAnime, 8)
+  recommendationsAnime = reproduce(recommendationsAnime, 4)
   // console.log(recommendationsAnime)
   const indexPopular = getRandomIndex(animePopular?.data?.length)
   const indexUpcoming = getRandomIndex(upcoming?.data?.length)

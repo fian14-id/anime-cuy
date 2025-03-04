@@ -33,11 +33,6 @@ const rateLimiter = {
 // Core reusable fetch function
 export const fetchApi = cache(async (resource, query = '', retries = 3) => {
   await rateLimiter.getToken();
-
-  if (!query) {
-    console.warn(`fetchApi dipanggil tanpa query di resource: ${resource}`);
-    return { data: [], error: "Query is required" }; // atau return empty array agar tidak error
-  }
   
   const endpoint = `${baseUrl}/${resource}${query ? `?${query}` : ''}`;
   

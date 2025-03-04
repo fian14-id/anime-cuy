@@ -11,7 +11,7 @@ const BASE_URL = "https://nexanime.fianity.com";
  * @returns {Array} Array of sitemap entries for all search routes
  */
 const createSearchEntries = (item) => {
-    const encodedTitle = encodeURIComponent(item?.title ? item.title : item?.name);
+    const encodedTitle = encodeURIComponent(item?.title !== null ? item.title : item?.name);
     return [
         // URL untuk pencarian general
         {
@@ -33,12 +33,12 @@ const createSearchEntries = (item) => {
         },
         {
             url: `${BASE_URL}/search/characters/${encodedTitle}`,
-            lastModified: parseISO(item?.aired?.from || new Date().toISOString()),
+            lastModified: parseISO(new Date().toISOString()),
             priority: 0.8
         },
         {
             url: `${BASE_URL}/search/people/${encodedTitle}`,
-            lastModified: parseISO(item?.aired?.from || new Date().toISOString()),
+            lastModified: parseISO(new Date().toISOString()),
             priority: 0.8
         },
     ];
@@ -55,7 +55,10 @@ export default async function sitemap() {
         const responseSearchCharacter = await fetchSearchCharacter();
         const responseSearchPeople = await fetchSearchPerson();
 
-        if (!responseSearchAnime || !responseSearchManga || !responseSearchCharacter || !responseSearchPeople) {
+        if (!responseSearchAnime || !responseSearchManga) {
+            return []
+        }
+        if (!responseSearchCharacter || !responseSearchPeople) {
             return []
         }
 
@@ -124,13 +127,16 @@ export default async function sitemap() {
         ];
 
         // Generate search entries for all items
-        const allItems = [...responseSearchAnime, ...responseSearchManga, ...responseSearchCharacter, ...responseSearchPeople];
-        const searchEntries = allItems.flatMap(createSearchEntries);
+        const animeMangaItems = [...responseSearchAnime, ...responseSearchManga];
+        const charPeopleItems = [...responseSearchCharacter, ...responseSearchPeople];
+        const AniMaSearchEntries = animeMangaItems.flatMap(createSearchEntries);
+        const charPeoSearchEntries = charPeopleItems.flatMap(createSearchEntries);
 
         // Menggabungkan semua entries
         return [
             ...staticRoutes,
-            ...searchEntries
+            ...AniMaSearchEntries,
+            ...charPeoSearchEntries
         ]
     } catch (error) {
         console.error("Error generating sitemap:", error);
