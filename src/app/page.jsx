@@ -137,17 +137,14 @@ const HeroSection = ({ topAnimeImage, newAnimeImage }) => (
 
 const Page = async () => {
   const animePopular = await fetchApi("top/anime", "limit=6");
-  const mangaPopular = await fetchApi("top/manga", "limit=6");
   const newSeasons = await fetchApi("seasons/now", "limit=6");
   const upcoming = await fetchApi("seasons/upcoming", "limit=6");
   let recommendationsAnime = await fetchNestedAnime("recommendations/anime", "entry")
   recommendationsAnime = reproduce(recommendationsAnime, 4)
-  // console.log(recommendationsAnime)
   const indexPopular = getRandomIndex(animePopular?.data?.length)
   const indexUpcoming = getRandomIndex(upcoming?.data?.length)
   const heroBackgroundImage = animePopular?.data?.[indexPopular];
   const newBackgroundImage = newSeasons?.data?.[indexUpcoming];
-
 
   return (
     <section>
@@ -159,12 +156,6 @@ const Page = async () => {
         api={animePopular?.data}
         setTitle="Popular Anime"
         linkHref="/popular/anime"
-        addtionalText="See More..."
-      />
-      <ListAnime
-        api={mangaPopular?.data}
-        setTitle="Popular Manga"
-        linkHref="/popular/manga"
         addtionalText="See More..."
       />
       <ListAnime
@@ -180,7 +171,7 @@ const Page = async () => {
         addtionalText="See More..."
       />
       <ListAnime
-        api={recommendationsAnime}
+        api={recommendationsAnime.data}
         setTitle="Recommend Anime"
         path="anime"
       />
