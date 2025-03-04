@@ -17,28 +17,6 @@ const createSearchEntries = (item) => {
             lastModified: parseISO(item?.aired?.from || new Date().toISOString()),
             priority: 0.9
         },
-        // URL untuk pencarian anime
-        {
-            url: `${BASE_URL}/search/anime/${encodedTitle}`,
-            lastModified: parseISO(item?.aired?.from || new Date().toISOString()),
-            priority: 0.8
-        },
-        // URL untuk pencarian manga
-        {
-            url: `${BASE_URL}/search/manga/${encodedTitle}`,
-            lastModified: parseISO(item?.aired?.from || new Date().toISOString()),
-            priority: 0.8
-        },
-        {
-            url: `${BASE_URL}/search/characters/${encodedTitle}`,
-            lastModified: parseISO(item?.aired?.from || new Date().toISOString()),
-            priority: 0.8
-        },
-        {
-            url: `${BASE_URL}/search/people/${encodedTitle}`,
-            lastModified: parseISO(item?.aired?.from || new Date().toISOString()),
-            priority: 0.8
-        },
     ];
 };
 
@@ -49,8 +27,8 @@ const createSearchEntries = (item) => {
 export default async function sitemap() {
     try {
         // Dapatkan anime dan manga populer terlebih dahulu
-        const animeResponse = await fetchApi('top/anime', 'limit=10&sfw');
-        const mangaResponse = await fetchApi('top/manga', 'limit=10&sfw');
+        const animeResponse = await fetchApi('top/anime', 'limit=5&sfw');
+        const mangaResponse = await fetchApi('seasons/now', 'limit=5&sfw');
 
         const animeItems = animeResponse.data || [];
         const mangaItems = mangaResponse.data || [];
@@ -59,48 +37,45 @@ export default async function sitemap() {
         let characterItems = [];
         let peopleItems = [];
 
-        // Dapatkan karakter untuk setiap anime
-        for (const anime of animeItems.slice(0, 5)) { // Batasi ke 5 anime untuk menghindari terlalu banyak permintaan
+        // Dapatkan satu karakter untuk setiap anime
+        for (const anime of animeItems) {
             if (anime.mal_id) {
                 const characterResponse = await fetchApi(`anime/${anime.mal_id}/characters`);
-                if (characterResponse.data) {
-                    // Ambil informasi karakter
-                    characterItems = [
-                        ...characterItems,
-                        ...characterResponse.data.map(charData => ({
-                            ...charData.character,
-                            aired: anime.aired // Gunakan tanggal anime sebagai referensi
-                        }))
-                    ];
+                if (characterResponse.data && characterResponse.data.length > 0) {
+                    // Ambil hanya karakter pertama (biasanya karakter utama)
+                    const mainCharacter = characterResponse.data[0];
                     
-                    // Ambil informasi seiyuu/pengisi suara (people)
-                    const voiceActors = characterResponse.data
-                        .flatMap(charData => charData.voice_actors || [])
-                        .filter(va => va && va.person);
-                        
-                    peopleItems = [
-                        ...peopleItems,
-                        ...voiceActors.map(va => ({
-                            ...va.person,
+                    // Tambahkan ke daftar karakter
+                    characterItems.push({
+                        ...mainCharacter.character,
+                        aired: anime.aired // Gunakan tanggal anime sebagai referensi
+                    });
+                    
+                    // Ambil satu voice actor (jika ada) untuk karakter ini
+                    if (mainCharacter.voice_actors && mainCharacter.voice_actors.length > 0) {
+                        const mainVoiceActor = mainCharacter.voice_actors[0];
+                        peopleItems.push({
+                            ...mainVoiceActor.person,
                             aired: anime.aired // Gunakan tanggal anime sebagai referensi
-                        }))
-                    ];
+                        });
+                    }
                 }
             }
         }
 
-        // Dapatkan karakter untuk setiap manga
-        for (const manga of mangaItems.slice(0, 5)) { // Batasi ke 5 manga
+        // Dapatkan satu karakter untuk setiap manga
+        for (const manga of mangaItems) {
             if (manga.mal_id) {
                 const characterResponse = await fetchApi(`manga/${manga.mal_id}/characters`);
-                if (characterResponse.data) {
-                    characterItems = [
-                        ...characterItems,
-                        ...characterResponse.data.map(charData => ({
-                            ...charData.character,
-                            aired: manga.published // Gunakan tanggal publikasi manga
-                        }))
-                    ];
+                if (characterResponse.data && characterResponse.data.length > 0) {
+                    // Ambil hanya karakter pertama (biasanya karakter utama)
+                    const mainCharacter = characterResponse.data[0];
+                    
+                    // Tambahkan ke daftar karakter
+                    characterItems.push({
+                        ...mainCharacter.character,
+                        aired: manga.published // Gunakan tanggal publikasi manga
+                    });
                 }
             }
         }
