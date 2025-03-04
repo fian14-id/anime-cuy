@@ -153,15 +153,14 @@ export default async function sitemap() {
             }))
         ];
 
-        // Generate search entries for all items
-        const allItems = [...animeItems, ...characterItems, ...peopleItems];
-        const searchEntries = allItems.flatMap(createSearchEntries);
+        // // Generate search entries for all items
+        // const allItems = [...animeItems, ...characterItems, ...peopleItems];
+        // const searchEntries = allItems.flatMap(createSearchEntries);
 
         // Menggabungkan semua entries
         return [
             ...staticRoutes,
             ...detailRoutes,
-            ...searchEntries
         ]
     } catch (error) {
         console.error("Error generating sitemap:", error);
