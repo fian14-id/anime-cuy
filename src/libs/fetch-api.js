@@ -25,7 +25,7 @@ const rateLimiter = {
     return new Promise(resolve => {
       setTimeout(async () => {
         resolve(await this.getToken());
-      }, 3000);
+      }, 5000);
     });
   }
 };
@@ -42,8 +42,8 @@ export const fetchApi = cache(async (resource, query = '', retries = 3) => {
     });
     
     if (response.status === 429 && retries > 0) {
-      console.log(`Rate limited, retrying in 2 seconds... (${retries} retries left)`);
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      console.log(`Rate limited, retrying in 5 seconds... (${retries} retries left)`);
+      await new Promise(resolve => setTimeout(resolve, 5000));
       return fetchApi(resource, query, retries - 1);
     }
     
@@ -59,7 +59,7 @@ export const fetchApi = cache(async (resource, query = '', retries = 3) => {
   } catch (error) {
     if (retries > 0) {
       console.log(`Request failed, retrying... (${retries} retries left)`);
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 5000));
       return fetchApi(resource, query, retries - 1);
     }
     throw error;

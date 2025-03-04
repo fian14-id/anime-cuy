@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import ListAnime from "@/components/AnimeList/ListAnime";
 import { getRandomIndex, reproduce } from "@/libs/simple-function";
-export const revalidate = 3600;
+export const revalidate = 7200;
 export const dynamicParams = false;
 
 // Metadata

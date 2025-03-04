@@ -1,4 +1,4 @@
-import { fetchApi } from "@/libs/fetch-api";
+import { fetchApi, fetchCharactersAnime } from "@/libs/fetch-api";
 import { parseISO } from 'date-fns';
 
 const BASE_URL = "https://nexanime.fianity.com";
@@ -8,17 +8,17 @@ const BASE_URL = "https://nexanime.fianity.com";
  * @param {Object} item - Anime or manga item
  * @returns {Array} Array of sitemap entries for all search routes
  */
-const createSearchEntries = (item) => {
-    const encodedTitle = encodeURIComponent(item?.title !== null ? item.title : item?.name);
-    return [
-        // URL untuk pencarian general
-        {
-            url: `${BASE_URL}/search/${encodedTitle}`,
-            lastModified: parseISO(item?.aired?.from || new Date().toISOString()),
-            priority: 0.9
-        },
-    ];
-};
+// const createSearchEntries = (item) => {
+//     const encodedTitle = encodeURIComponent(item?.title !== null ? item.title : item?.name);
+//     return [
+//         // URL untuk pencarian general
+//         {
+//             url: `${BASE_URL}/search/${encodedTitle}`,
+//             lastModified: parseISO(item?.aired?.from || new Date().toISOString()),
+//             priority: 0.9
+//         },
+//     ];
+// };
 
 /**
  * Generates static sitemap for the entire website
@@ -27,7 +27,7 @@ const createSearchEntries = (item) => {
 export default async function sitemap() {
     try {
         // Dapatkan anime dan manga populer terlebih dahulu
-        const animeResponse = await fetchApi('top/anime', 'limit=5&sfw');
+        const animeResponse = await fetchApi('top/anime', 'limit=3&sfw');
 
         const animeItems = animeResponse.data || [];
 
@@ -38,7 +38,7 @@ export default async function sitemap() {
         // Dapatkan satu karakter untuk setiap anime
         for (const anime of animeItems) {
             if (anime.mal_id) {
-                const characterResponse = await fetchApi(`anime/${anime.mal_id}/characters`);
+                const characterResponse = await fetchCharactersAnime(anime.mal_id);
                 if (characterResponse.data && characterResponse.data.length > 0) {
                     // Ambil hanya karakter pertama (biasanya karakter utama)
                     const mainCharacter = characterResponse.data[0];
