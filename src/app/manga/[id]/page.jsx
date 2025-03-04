@@ -2,9 +2,10 @@
 import Image from "next/image";
 import DetailContentManga from "./DetailManga";
 import { page_content } from "@/libs/setting-app";
+import { cache } from "react";
 const { fetchDetailsManga } = require("@/libs/fetch-api");
 
-const getMangaDetails = async (id) => {
+const getMangaDetails = cache(async (id) => {
   try {
       const result = await fetchDetailsManga(id);
       return result?.data || null;
@@ -12,7 +13,7 @@ const getMangaDetails = async (id) => {
       console.error("Failed to fetch anime details:", error);
       return null;
   }
-};
+})
 export async function generateMetadata({ params }) {
   const details = await getMangaDetails(params.id);
   const title = details?.title || "Default Title";

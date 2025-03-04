@@ -2,6 +2,7 @@ import ClientCharacter from "./ClientCharacter";
 import { fetchCharactersFull, fetchCharactersPictures } from "@/libs/fetch-api";
 import { page_content } from "@/libs/setting-app";
 import { getRandomIndex } from "@/libs/simple-function";
+import { cache } from "react";
 
 const getCharacter = async (id) => {
   try {
@@ -13,7 +14,7 @@ const getCharacter = async (id) => {
   }
 };
 
-const getCharacterPictures = async (id) => {
+const getCharacterPictures = cache(async (id) => {
   try {
     const result = await fetchCharactersPictures(id);
     return result?.data || null;
@@ -21,7 +22,7 @@ const getCharacterPictures = async (id) => {
     console.log("Error Fetching Character: ", error);
     return null;
   }
-};
+})
 
 export async function generateMetadata({ params }) {
   const character = await getCharacter(params.id);

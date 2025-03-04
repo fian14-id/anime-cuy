@@ -4,6 +4,7 @@
 import ClientPerson from "./ClientPerson";
 import { fetchPersonFull, fetchPersonPictures } from "@/libs/fetch-api";
 import { page_content } from "@/libs/setting-app";
+import { cache } from "react";
 
 const getPerson = async (id) => {
   try {
@@ -15,7 +16,7 @@ const getPerson = async (id) => {
   }
 };
 
-const getPersonPictures = async (id) => {
+const getPersonPictures = cache(async (id) => {
   try {
     const result = await fetchPersonPictures(id);
     return result?.data || null;
@@ -23,7 +24,7 @@ const getPersonPictures = async (id) => {
     console.log("Error Fetching Person: ", error);
     return null;
   }
-};
+})
 
 export async function generateMetadata({ params }) {
   const person = await getPerson(params.id);
