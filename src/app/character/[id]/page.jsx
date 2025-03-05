@@ -1,8 +1,11 @@
-import ClientCharacter from "./ClientCharacter";
 import { fetchCharactersFull, fetchCharactersPictures } from "@/libs/fetch-api";
 import { page_content } from "@/libs/setting-app";
 import { getRandomIndex } from "@/libs/simple-function";
 import { cache } from "react";
+import dynamic from "next/dynamic";
+
+const ClientCharacterComponent = dynamic(() => import('./ClientCharacter'), {ssr: false})
+
 
 const getCharacter = async (id) => {
   try {
@@ -75,7 +78,7 @@ export default async function Page({ params }) {
 
   // Teruskan data ke client component
   return (
-    <ClientCharacter 
+    <ClientCharacterComponent 
       character={character} 
       pictures={pictures} 
       getRandomPicture={getRandomPicture} 

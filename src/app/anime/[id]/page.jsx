@@ -1,10 +1,12 @@
 // page.js
 
 import Image from "next/image";
-import DetailContentAnime from "./DetailContent";
 import { page_content } from "@/libs/setting-app";
 import { cache } from "react";
 const { fetchDetailsAnime } = require("@/libs/fetch-api");
+import dynamic from "next/dynamic";
+
+const ClientDetailAnime = dynamic(() => import('./DetailContent'), {ssr: false})
 
 const getAnimeDetails = cache(async (id) => {
   try {
@@ -75,7 +77,7 @@ const Page = async ({ params }) => {
           />
         </main>
         <main className="flex flex-col w-full gap-2 px-6 py-4">
-          <DetailContentAnime animeData={result} />
+          <ClientDetailAnime animeData={result} />
         </main>
       </section>
     );

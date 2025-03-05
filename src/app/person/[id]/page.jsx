@@ -1,10 +1,12 @@
 // File: app/character/[id]/page.js
 // Ini adalah server component yang menangani metadata dan fetching data awal
 
-import ClientPerson from "./ClientPerson";
 import { fetchPersonFull, fetchPersonPictures } from "@/libs/fetch-api";
 import { page_content } from "@/libs/setting-app";
 import { cache } from "react";
+import dynamic from "next/dynamic";
+
+const ClientPersonComponent = dynamic(() => import('./ClientPerson'), {ssr: false})
 
 const getPerson = async (id) => {
   try {
@@ -76,7 +78,7 @@ export default async function Page({ params }) {
 
   // Teruskan data ke client component
   return (
-    <ClientPerson 
+    <ClientPersonComponent 
       person={person} 
       pictures={pictures} 
     />

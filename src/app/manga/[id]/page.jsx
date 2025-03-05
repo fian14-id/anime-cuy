@@ -4,6 +4,10 @@ import DetailContentManga from "./DetailManga";
 import { page_content } from "@/libs/setting-app";
 import { cache } from "react";
 const { fetchDetailsManga } = require("@/libs/fetch-api");
+import dynamic from "next/dynamic";
+
+const ClientDetailManga = dynamic(() => import('./DetailManga'), {ssr: false})
+
 
 const getMangaDetails = cache(async (id) => {
   try {
@@ -74,7 +78,7 @@ const Page = async ({ params }) => {
           />
         </main>
         <main className="flex flex-col w-full gap-2 px-6 py-4">
-          <DetailContentManga animeData={result} />
+          <ClientDetailManga animeData={result} />
         </main>
       </section>
     );
