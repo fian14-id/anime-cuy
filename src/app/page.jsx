@@ -6,7 +6,7 @@ import Link from "next/link";
 import ListAnime from "@/components/AnimeList/ListAnime";
 import { getRandomIndex, reproduce } from "@/libs/simple-function";
 import { Suspense } from "react";
-export const revalidate = 7200;
+export const revalidate = 60;
 export const dynamicParams = false;
 
 // Metadata
@@ -140,8 +140,6 @@ const HeroSection = ({ topAnimeImage, newAnimeImage }) => (
 const Page = async () => {
   const animePopular = await fetchApi("top/anime", "limit=6");
   const newSeasons = await fetchApi("seasons/now", "limit=6");
-  let recommendationsAnime = await fetchNestedAnime("recommendations/anime", "entry")
-  recommendationsAnime = reproduce(recommendationsAnime, 4)
   const indexPopular = getRandomIndex(animePopular?.data?.length)
   const indexUpcoming = getRandomIndex(newSeasons?.data?.length)
   const heroBackgroundImage = animePopular?.data?.[indexPopular];
@@ -177,13 +175,6 @@ const Page = async () => {
         setTitle="Now Seasons"
         linkHref="/seasons/now"
         addtionalText="See More..."
-      />
-      </Suspense>
-      <Suspense fallback={<LoadingText />}>
-      <ListAnime
-        api={recommendationsAnime.data}
-        setTitle="Recommend Anime"
-        path="anime"
       />
       </Suspense>
       {/* <Suspense fallback={<SkeletonLoading />}>

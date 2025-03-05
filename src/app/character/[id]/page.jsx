@@ -1,13 +1,12 @@
 import { fetchCharactersFull, fetchCharactersPictures } from "@/libs/fetch-api";
 import { page_content } from "@/libs/setting-app";
 import { getRandomIndex } from "@/libs/simple-function";
-import { cache } from "react";
 import dynamic from "next/dynamic";
 
 const ClientCharacterComponent = dynamic(() => import('./ClientCharacter'), {ssr: false})
 export const revalidate = 60;
 
-const getCharacter = cache(async(id) => {
+const getCharacter = async(id) => {
   try {
     const result = await fetchCharactersFull(id);
     return result?.data || null;
@@ -15,9 +14,9 @@ const getCharacter = cache(async(id) => {
     console.log("Error Fetching Character: ", error);
     return null;
   }
-});
+};
 
-const getCharacterPictures = cache(async (id) => {
+const getCharacterPictures = async (id) => {
   try {
     const result = await fetchCharactersPictures(id);
     return result?.data || null;
@@ -25,7 +24,7 @@ const getCharacterPictures = cache(async (id) => {
     console.log("Error Fetching Character: ", error);
     return null;
   }
-})
+}
 
 export async function generateMetadata({ params }) {
   const character = await getCharacter(params.id);
