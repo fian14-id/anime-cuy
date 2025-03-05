@@ -1,6 +1,5 @@
 // page.js
 import Image from "next/image";
-import DetailContentManga from "./DetailManga";
 import { page_content } from "@/libs/setting-app";
 import { cache } from "react";
 const { fetchDetailsManga } = require("@/libs/fetch-api");

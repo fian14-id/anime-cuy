@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 const ClientCharacterComponent = dynamic(() => import('./ClientCharacter'), {ssr: false})
 
 
-const getCharacter = async (id) => {
+const getCharacter = cache(async(id) => {
   try {
     const result = await fetchCharactersFull(id);
     return result?.data || null;
@@ -15,7 +15,7 @@ const getCharacter = async (id) => {
     console.log("Error Fetching Character: ", error);
     return null;
   }
-};
+});
 
 const getCharacterPictures = cache(async (id) => {
   try {
