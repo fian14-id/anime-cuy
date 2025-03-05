@@ -7,7 +7,7 @@ const { fetchDetailsAnime } = require("@/libs/fetch-api");
 import dynamic from "next/dynamic";
 
 const ClientDetailAnime = dynamic(() => import('./DetailContent'), {ssr: false})
-
+export const revalidate = 60;
 const getAnimeDetails = cache(async (id) => {
   try {
       const result = await fetchDetailsAnime(id);

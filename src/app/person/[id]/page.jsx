@@ -7,6 +7,7 @@ import { cache } from "react";
 import dynamic from "next/dynamic";
 
 const ClientPersonComponent = dynamic(() => import('./ClientPerson'), {ssr: false})
+export const revalidate = 60;
 
 const getPerson = cache(async (id) => {
   try {

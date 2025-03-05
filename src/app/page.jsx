@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import ListAnime from "@/components/AnimeList/ListAnime";
 import { getRandomIndex, reproduce } from "@/libs/simple-function";
+import { Suspense } from "react";
 export const revalidate = 7200;
 export const dynamicParams = false;
 
@@ -146,29 +147,45 @@ const Page = async () => {
   const heroBackgroundImage = animePopular?.data?.[indexPopular];
   const newBackgroundImage = newSeasons?.data?.[indexUpcoming];
 
+  const LoadingText = ()  => {
+    return (
+      <div className="flex items-center justify-center">
+        <h2>Loading...</h2>
+      </div>
+    )
+  }
+
   return (
     <section>
+      <Suspense fallback={<LoadingText />}>
       <HeroSection
         topAnimeImage={heroBackgroundImage}
         newAnimeImage={newBackgroundImage}
       />
+      </Suspense>
+        <Suspense fallback={<LoadingText />}>
       <ListAnime
         api={animePopular?.data}
         setTitle="Popular Anime"
         linkHref="/popular/anime"
         addtionalText="See More..."
       />
+      </Suspense>
+      <Suspense fallback={<LoadingText />}>
       <ListAnime
         api={newSeasons?.data}
         setTitle="Now Seasons"
         linkHref="/seasons/now"
         addtionalText="See More..."
       />
+      </Suspense>
+      <Suspense fallback={<LoadingText />}>
       <ListAnime
         api={recommendationsAnime.data}
         setTitle="Recommend Anime"
         path="anime"
       />
+      </Suspense>
       {/* <Suspense fallback={<SkeletonLoading />}>
         <AnimeList
           api={animePopular}

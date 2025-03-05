@@ -3,12 +3,8 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
-import {
-  checkImageRatioAndApplyStyle,
-  formatToParagraph,
-} from "@/libs/simple-function";
 import {motion} from "framer-motion"
 import ListAnime from "@/components/AnimeList/ListAnime";
 import Link from "next/link";
@@ -17,48 +13,24 @@ import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 export default function ClientCharacter({
   character,
   pictures,
-  getRandomPicture,
 }) {
-  const [imageClass, setImageClass] = useState("aspect-square");
-  const [isLoading, setIsLoading] = useState(true);
-  const [isAbout, setIsAbout] = useState("");
   const [currentIndex, setCurrentIndex] = useState(1);
 
-  // useEffect(() => {
-  //   setIsLoading(true);
-    
-  //   if (pictures && pictures.length > 0) {
-  //     checkImageRatioAndApplyStyle(pictures[getRandomPicture].jpg.image_url)
-  //       .then((className) => {
-  //         setImageClass(className);
-  //         setIsLoading(false);
-  //         if (character?.about) {
-  //           setIsAbout(formatToParagraph(character?.about));
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error checking image ratio: ", error);
-  //         setIsLoading(false);
-  //       });
-  //   } else {
-  //     setIsLoading(false);
-  //   }
-  // }, [pictures, getRandomPicture, character?.about]);
 
-  const handlePrevIndex = () => {
-    console.log(currentIndex)
-    setCurrentIndex((prevIndex) => prevIndex - 1)
-    console.log(currentIndex)
-  }
-  const handleNextIndex = () => {
-    console.log(currentIndex)
-    if (currentIndex > pictures?.length) {
-      return null
-    } else {
-      setCurrentIndex((prevIndex) => prevIndex + 1)
-    console.log(currentIndex)
+    const handlePrevIndex = () => {
+      console.log(currentIndex)
+      setCurrentIndex((prevIndex) => prevIndex - 1)
+      console.log(currentIndex)
     }
-  }
+    const handleNextIndex = () => {
+      console.log(currentIndex)
+      if (currentIndex > pictures?.length) {
+        return null
+      } else {
+        setCurrentIndex((prevIndex) => prevIndex + 1)
+      console.log(currentIndex)
+      }
+    }
 
   const boxCharacterStyle = "space-y-1";
   const titleCharacterStyle = "uppercase font-medium text-[1.5vw] md:text-sm";

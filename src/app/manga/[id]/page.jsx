@@ -6,7 +6,7 @@ const { fetchDetailsManga } = require("@/libs/fetch-api");
 import dynamic from "next/dynamic";
 
 const ClientDetailManga = dynamic(() => import('./DetailManga'), {ssr: false})
-
+export const revalidate = 60;
 
 const getMangaDetails = cache(async (id) => {
   try {
